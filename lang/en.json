@@ -1,0 +1,30 @@
+{
+  "navMenu": {
+    "onSale": "On Sale",
+    "login": "Login"
+  },
+  "homeScreen": {
+    "collections": "collections",
+    "fabrics": "Fabrics",
+    "onSale": "On Sale",
+    "shopNow": "Shop Now",
+    "newIn": "New In",
+    "latestProducts": "Latest"
+
+  },
+  "productArchive": {
+    "filter": "Filter",
+    "sort": "Sort",
+    "newest": "newest",
+    "oldest": "oldest",
+    "priceHTL": "price desc",
+    "priceLTH": "price asc",
+    "apply": "apply",
+    "reset": "reset",
+    "price": "price",
+    "loadMore": "load more"
+  },
+  "productDetails": {
+    "addToCart": "add to cart"
+  }
+}
