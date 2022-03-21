@@ -92,22 +92,22 @@ class LatestProductsTab extends StatelessWidget {
 
           ///latest products
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
                 child: LocalizedText(
-                  'homeScreen.latestProducts',
+                  'homePage.latestProducts',
                   style: titleStyle,
                 ),
               ),
               TextButton(
-                child: LocalizedText('homeScreen.shopNow',
+                child: LocalizedText('homePage.shopNow',
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary)),
                 onPressed: () {
                   latestProductsTabData.navigateToArchiveScreen(
                     context,
-                    'homeScreen.newIn',
+                    'homePage.newIn',
                   );
                 },
               )
@@ -136,10 +136,15 @@ class LatestProductsTab extends StatelessWidget {
                           return InkWell(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                '${snapshot.data![index].images!.first.src}',
-                                fit: BoxFit.cover,
-                              ),
+                              child: snapshot.data![index].images!.isNotEmpty
+                                  ? Image.network(
+                                      '${snapshot.data![index].images!.first.src}',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/hijab_placeholder.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                             onTap: () {
                               latestProductsTabData
@@ -183,10 +188,16 @@ class LatestProductsTab extends StatelessWidget {
                     return InkWell(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
-                        child: Image.network(
-                          '${latestProductsTabData.loadedProducts[index].images!.first.src}',
-                          fit: BoxFit.cover,
-                        ),
+                        child: latestProductsTabData
+                                .loadedProducts[index].images!.isNotEmpty
+                            ? Image.network(
+                                '${latestProductsTabData.loadedProducts[index].images!.first.src}',
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                'assets/images/hijab_placeholder.jpg',
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       onTap: () {
                         latestProductsTabData.navigateToProductDetailsScreen(

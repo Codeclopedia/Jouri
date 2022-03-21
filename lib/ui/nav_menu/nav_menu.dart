@@ -17,15 +17,20 @@ class NavMenu extends StatelessWidget {
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
     TextDirection direction =
         currentLang == 'ar' ? TextDirection.rtl : TextDirection.ltr;
-    TextStyle subheadTitleBlack = TextStyle(
-      fontSize: 13,
-      fontWeight: FontWeight.w600,
+    TextStyle itemStyle = TextStyle(
       color: Theme.of(context).primaryColor,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+      letterSpacing: 2.8,
     );
-    TextStyle expansionTitle = const TextStyle(
-      fontSize: 13,
-      fontWeight: FontWeight.w600,
-    );
+    // TextStyle expansionStyle = TextStyle(
+    //   color: Theme.of(context).primaryColor,
+    //   fontSize: 11,
+    //   fontWeight: FontWeight.w400,
+    //   fontStyle: FontStyle.normal,
+    //   letterSpacing: 2.2,
+    // );
 
     return Drawer(
       ///load parent category -- level 0
@@ -40,7 +45,7 @@ class NavMenu extends StatelessWidget {
             title: Text(
               currentLang == 'ar' ? 'English' : 'عربي',
               textDirection: direction,
-              style: subheadTitleBlack,
+              style: itemStyle,
             ),
             onTap: () {
               currentLang == 'ar'
@@ -56,7 +61,7 @@ class NavMenu extends StatelessWidget {
             title: LocalizedText(
               'navMenu.onSale',
               textDirection: direction,
-              style: subheadTitleBlack,
+              style: itemStyle,
             ),
             onTap: () {},
           ),
@@ -68,7 +73,7 @@ class NavMenu extends StatelessWidget {
             title: LocalizedText(
               'navMenu.login',
               textDirection: direction,
-              style: subheadTitleBlack,
+              style: itemStyle,
             ),
             onTap: () {},
           ),
@@ -99,7 +104,7 @@ class NavMenu extends StatelessWidget {
                                 child: Text(
                                   snapshot0.data![index].name!,
                                   textDirection: direction,
-                                  style: expansionTitle,
+                                  style: itemStyle,
                                 ),
                               ),
                               // leading: snapshot0.data![index].image != null
@@ -166,7 +171,7 @@ class NavMenu extends StatelessWidget {
                                                               .data![i].name!,
                                                           textDirection:
                                                               direction,
-                                                          style: expansionTitle,
+                                                          style: itemStyle,
                                                         ),
                                                       ),
                                                       // leading: snapshot1
@@ -234,7 +239,7 @@ class NavMenu extends StatelessWidget {
                                                                                 Text(
                                                                               snapshot2.data![y].name!,
                                                                               textDirection: direction,
-                                                                              style: subheadTitleBlack,
+                                                                              style: itemStyle,
                                                                             ),
                                                                             // leading: snapshot2.data![y].image != null
                                                                             //     ? Image.network(
@@ -268,8 +273,7 @@ class NavMenu extends StatelessWidget {
                                                             .data![i].name!,
                                                         textDirection:
                                                             direction,
-                                                        style:
-                                                            subheadTitleBlack,
+                                                        style: itemStyle,
                                                       ),
                                                       // leading: snapshot1
                                                       //             .data![i]
@@ -319,7 +323,7 @@ class NavMenu extends StatelessWidget {
                               title: Text(
                                 snapshot0.data![index].name!,
                                 textDirection: direction,
-                                style: subheadTitleBlack,
+                                style: itemStyle,
                               ),
                               // leading: snapshot0.data![index].image != null
                               //     ? Image.network(

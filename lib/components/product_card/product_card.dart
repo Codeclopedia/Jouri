@@ -16,25 +16,25 @@ class ProductCard extends StatelessWidget {
   final Product gridItem;
   final String currentLang;
 
-  var itemTitleStyle = const TextStyle(
-    color: Color(0xff000000),
-    fontSize: 11,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 2.2,
-    // height: 10,
-  );
-  var itemPriceStyle = const TextStyle(
-    color: Color(0xff404041),
-    fontSize: 12.5,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 2.8,
-  );
-
   @override
   Widget build(BuildContext context) {
     var productGridItemData =
         Provider.of<ProductCardViewModel>(context, listen: false);
     var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
+    var itemTitleStyle = TextStyle(
+      color: Theme.of(context).primaryColor,
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 2.2,
+      // height: 10,
+    );
+    var itemPriceStyle = TextStyle(
+      color: Theme.of(context).primaryColor,
+      fontFamily: 'OpenSans',
+      fontSize: 12.5,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 2.8,
+    );
 
     return InkWell(
       onTap: () {
@@ -45,29 +45,37 @@ class ProductCard extends StatelessWidget {
         height: 228,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                topLeft: Radius.circular(5), topRight: Radius.circular(5))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ///slider
             Stack(
               children: [
-                ImageSlideshow(
-                    // width: 155,
-                    height: 230,
-                    initialPage: 0,
-                    indicatorColor: Theme.of(context).primaryColor,
-                    indicatorBackgroundColor: Colors.grey,
-                    autoPlayInterval: 0,
-                    children: gridItem.images!
-                        .map((e) => ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                e.src!,
-                                fit: BoxFit.cover,
-                              ),
-                            ))
-                        .toList()),
+                gridItem.images!.isNotEmpty
+                    ? ImageSlideshow(
+                        // width: 155,
+                        height: 230,
+                        initialPage: 0,
+                        indicatorColor: Theme.of(context).primaryColor,
+                        indicatorBackgroundColor: Colors.grey,
+                        autoPlayInterval: 0,
+                        children: gridItem.images!
+                            .map((e) => ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5)),
+                                  child: Image.network(
+                                    e.src!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ))
+                            .toList())
+                    : Image.asset(
+                        'assets/images/hijab_placeholder.jpg',
+                        height: 230,
+                        fit: BoxFit.cover,
+                      ),
                 Consumer<ProductCardViewModel>(
                     builder: (context, viewModel, __) {
                   return Align(

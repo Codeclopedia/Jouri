@@ -51,7 +51,7 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
         children: [
           ListTile(
             title: Text(
-              General.getTranslatedText(context, 'productArchive.sort'),
+              General.getTranslatedText(context, 'productArchivePage.sort'),
               style: sheetTitleStyle,
             ),
             trailing: IconButton(
@@ -73,7 +73,7 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
                 Navigator.of(context).pop(value);
               },
               child: Text(
-                  General.getTranslatedText(context, 'productArchive.apply')),
+                  General.getTranslatedText(context, 'productArchivePage.apply')),
             ),
           ),
         ],
@@ -87,7 +87,7 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
       groupValue: value,
       onChanged: (ind) => setState(() => value = ind as int?),
       title: Text(
-        General.getTranslatedText(context, "productArchive.$title"),
+        General.getTranslatedText(context, "productArchivePage.$title"),
         style: elementsStyle,
       ),
       selectedTileColor: Theme.of(context).primaryColor,

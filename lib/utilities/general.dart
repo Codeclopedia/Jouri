@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_cart/model/cart_model.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -43,29 +46,13 @@ class General {
   static void changeLanguage(context, langKey) {
     final localizations = Provider.of<KLocalizations>(context, listen: false);
     localizations.setLocale(Locale(langKey));
+    General.setStringSP('lang', '$langKey');
   }
 
   static String getLanguage(context) {
     final localizations = Provider.of<KLocalizations>(context, listen: false);
     return localizations.locale.languageCode;
   }
-
-  // static Future<String?> getFavSP() async {
-  //   final sp = await SharedPreferences.getInstance();
-  //   var data = sp.getString('fav');
-  //   return data;
-  // }
-  //
-  // static void setFavSP(data) async {
-  //   final sp = await SharedPreferences.getInstance();
-  //   var stringData;
-  //   if (data is Set) {
-  //     stringData = json.encode(data.toList());
-  //   } else {
-  //     stringData = json.encode(data);
-  //   }
-  //   await sp.setString('fav', stringData);
-  // }
 
   static Future<String?> getSettings() async {
     return await getStringSP('settings');
@@ -227,6 +214,132 @@ class General {
     final sp = await SharedPreferences.getInstance();
     await sp.setBool(key, data);
   }
+
+  ///
+
+  static FlutterCart? _cart;
+  static final _box = GetStorage();
+
+  static void initCart() async {
+    _cart = FlutterCart();
+    if (_box.hasData('cart')) {
+      List<CartItem> items = [];
+      List data = json.decode(_box.read('cart'));
+      data.forEach((element) {
+        var item = CartItem.fromJson(element);
+        items.add(item);
+        addToCart(
+            productId: item.productId,
+            unitPrice: item.unitPrice,
+            quantity: item.quantity,
+            variation: item.productDetails);
+      });
+    }
+  }
+
+  static void addToCart(
+      {required productId,
+      required unitPrice,
+      required quantity,
+      variation}) async {
+    if (_cart == null) initCart();
+    var item = _cart!.getSpecificItemFromCart(productId);
+    if (item == null) {
+      var message = _cart?.addToCart(
+          productId: productId,
+          unitPrice: unitPrice,
+          quantity: quantity,
+          productDetailsObject: variation);
+      print(message.message);
+    } else {
+      incrementCartItem(productId: productId);
+    }
+    _box.write('cart', json.encode(_cart!.cartItem));
+  }
+
+  static void updateCart(
+      {required productId, required unitPrice, variation}) async {
+    if (_cart == null) initCart();
+    var quantity = getSpecificCart(productId: productId)!.quantity;
+    removeCartItem(productId: productId);
+    addToCart(
+        productId: productId,
+        unitPrice: unitPrice,
+        quantity: quantity,
+        variation: variation);
+  }
+
+  static void incrementCartItem({required productId}) async {
+    if (_cart == null) initCart();
+    var index = _cart!.findItemIndexFromCart(productId);
+    if (index != null) {
+      var message = _cart!.incrementItemToCart(index);
+      print(message.message);
+    }
+    _box.write('cart', json.encode(_cart!.cartItem));
+  }
+
+  static void decrementCartItem({required productId}) async {
+    if (_cart == null) initCart();
+    var index = _cart!.findItemIndexFromCart(productId);
+    if (index != null) {
+      var message = _cart!.decrementItemFromCart(index);
+      print(message.message);
+    }
+    _box.write('cart', json.encode(_cart!.cartItem));
+  }
+
+  static void clearCart() async {
+    if (_cart == null) initCart();
+    _cart!.deleteAllCart();
+    _box.remove('cart');
+  }
+
+  static void removeCartItem({required productId}) async {
+    if (_cart == null) initCart();
+    var index = _cart!.findItemIndexFromCart(productId);
+    if (index != null) {
+      var message = _cart!.deleteItemFromCart(index);
+      print(message.message);
+    }
+    _box.write('cart', json.encode(_cart!.cartItem));
+  }
+
+  static int getCartCount() {
+    if (_cart == null) initCart();
+    int count = _cart!.getCartItemCount();
+    return count;
+  }
+
+  static double getCartPrice() {
+    if (_cart == null) initCart();
+    double price = _cart!.getTotalAmount();
+    return price;
+  }
+
+  static List<int> getCartIds() {
+    if (_cart == null) initCart();
+    var ids = <int>[];
+    var list = _cart!.cartItem;
+    list.forEach((element) {
+      ids.add(element.productId);
+    });
+    return ids;
+  }
+
+  static List<CartItem> getCartItems() {
+    if (_cart == null) initCart();
+    var list = _cart!.cartItem;
+    return list;
+  }
+
+  static CartItem? getSpecificCart({required productId}) {
+    if (_cart == null) initCart();
+    var item = _cart!.getSpecificItemFromCart(productId);
+    return item;
+  }
+
+  ///
 
   static final countryList = [
     "Afghanistan",

@@ -46,7 +46,7 @@ class OnSaleTab extends StatelessWidget {
                   onSaleTabData.filterProduct(context);
                 },
                 child: LocalizedText(
-                  'productArchive.filter',
+                  'productArchivePage.filter',
                   style: buttonTextStyle,
                 ),
               ),
@@ -59,7 +59,7 @@ class OnSaleTab extends StatelessWidget {
                   onSaleTabData.sortProduct(context);
                 },
                 child: LocalizedText(
-                  'productArchive.sort',
+                  'productArchivePage.sort',
                   style: buttonTextStyle,
                 ),
               ),
@@ -147,7 +147,7 @@ class OnSaleTab extends StatelessWidget {
                               onSaleTabData.loadMore(context);
                             },
                             child: const LocalizedText(
-                                'productArchive.loadMore'))),
+                                'productArchivePage.loadMore'))),
                     const SizedBox(
                       height: 30,
                     ),

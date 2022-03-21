@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-
 import 'package:provider/provider.dart';
-
 import '../home_screen/home_page_screen.dart';
 import '../home_screen/home_page_view_model.dart';
-import '../home_screen/tabs/collections_tab/collections_tab_screen.dart';
+import '../home_screen/tabs/collections_tab/collections_tab.dart';
 import '../home_screen/tabs/collections_tab/collections_tab_view_model.dart';
-import '../home_screen/tabs/fabrics_tab/fabrics_tab_screen.dart';
+import '../home_screen/tabs/fabrics_tab/fabrics_tab.dart';
 import '../home_screen/tabs/fabrics_tab/fabrics_tab_view_model.dart';
 
 class SplashScreenViewModel extends ChangeNotifier {
@@ -114,21 +112,8 @@ class SplashScreenViewModel extends ChangeNotifier {
         Navigator.pushAndRemoveUntil(
             context,
             CupertinoPageRoute(
-              builder: (_) => MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(
-                    create: (context) => HomePageViewModel(),
-                    child: const HomePageScreen(),
-                  ),
-                  ChangeNotifierProvider(
-                    create: (context) => CollectionsTabViewModel(),
-                    child: const CollectionsTab(),
-                  ),
-                  ChangeNotifierProvider(
-                    create: (context) => FabricsTabViewModel(),
-                    child: const FabricsTab(),
-                  ),
-                ],
+              builder: (_) => ChangeNotifierProvider(
+                create: (context) => HomePageViewModel(),
                 child: const HomePageScreen(),
               ),
             ),

@@ -47,6 +47,10 @@ dependencies:
   syncfusion_flutter_sliders: ^19.4.54
   font_awesome_flutter: ^9.2.0
   flutter_html: ^2.2.1
+  flutter_cart: ^0.0.7
+  get_storage: ^2.0.3
+  badges: ^2.0.2
+
 
 
 

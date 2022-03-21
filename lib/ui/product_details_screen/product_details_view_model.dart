@@ -1,19 +1,28 @@
 import 'dart:convert';
 
+import 'package:Jouri/ui/cart/cart_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/attribute_term.dart';
 import '../../models/product.dart';
 import '../../models/product_variation.dart';
 import '../../utilities/constants.dart';
+import '../../utilities/general.dart';
 import '../../utilities/http_requests.dart';
+import '../cart/cart_view_model.dart';
 
 class ProductDetailsViewModel extends ChangeNotifier {
   final Product product;
-  ProductDetailsViewModel({required this.product});
+  final bool isVariable;
+
+  ProductDetailsViewModel({required this.product, required this.isVariable});
 
   List<ProductVariation> loadedVariations = [];
   ProductVariation? selectedVariation;
+  int cartCount = 0, quantity = 1;
   var isFav = false;
   var colorAttributeIndexInProduct,
       colorAttributeIndexInVariation,
@@ -168,5 +177,78 @@ class ProductDetailsViewModel extends ChangeNotifier {
         error: () {});
 
     return loadedData;
+  }
+
+  ///add to cart methods
+  void recalculateCartCount() {
+    cartCount = General.getCartCount();
+    notifyListeners();
+  }
+
+  addToCart(context) {
+    General.addToCart(
+        productId: product.id,
+        unitPrice: selectedVariation != null && isVariable
+            ? double.parse(selectedVariation!.price!)
+            : double.parse(product.price!),
+        quantity: quantity,
+        variation:
+            selectedVariation != null && isVariable ? selectedVariation : null);
+    HapticFeedback.vibrate();
+    recalculateCartCount();
+  }
+
+  decrement() {
+    if (quantity > 1) {
+      // General.decrementCartItem(
+      //   productId: selectedVariation != null && isVariable
+      //       ? selectedVariation!.id
+      //       : product.id,
+      // );
+      quantity--;
+      print('current quantity: $quantity');
+      HapticFeedback.vibrate();
+      notifyListeners();
+    } else {
+      null;
+    }
+    // recalculateCartCount();
+  }
+
+  increment() {
+    // General.incrementCartItem(
+    //   productId: selectedVariation != null && isVariable
+    //       ? selectedVariation!.id
+    //       : product.id,
+    // );
+    if (isVariable) {
+      if (quantity + 1 <= selectedVariation!.stockQuantity!.toInt()) {
+        quantity++;
+        print('current quantity: $quantity');
+        HapticFeedback.vibrate();
+        notifyListeners();
+      } else {
+        return SnackBar(content: Text('not available more than $quantity'));
+      }
+    } else {
+      if (quantity + 1 <= product.stockQuantity!.toInt()) {
+        quantity++;
+        print('current quantity: $quantity');
+        HapticFeedback.vibrate();
+        notifyListeners();
+      } else {
+        return SnackBar(content: Text('not available more than $quantity'));
+      }
+    }
+
+    // recalculateCartCount();
+  }
+
+  navigateToCart(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => CartViewModel(),
+              child: const CartScreen(),
+            )));
   }
 }

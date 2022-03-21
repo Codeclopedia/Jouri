@@ -52,24 +52,26 @@ class FabricsTab extends StatelessWidget {
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: Container(
-                                  height: 239,
+                                  height: 240,
 
                                   ///image
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: NetworkImage(
-                                          snapshot.data![index].description !=
-                                                  ""
-                                              ? '${snapshot.data![index].description}'
-                                              : Constants.imagePlaceholder,
-                                        ),
+                                        image: snapshot
+                                                    .data![index].description !=
+                                                ''
+                                            ? NetworkImage(
+                                                '${snapshot.data![index].description}')
+                                            : const AssetImage(
+                                                    'assets/images/hijab_placeholder.jpg')
+                                                as ImageProvider,
                                         fit: BoxFit.cover),
                                   ),
 
                                   ///title
                                   child: Center(
                                     child: Container(
-                                      width: 198,
+                                      width: 200,
                                       height: 30,
                                       decoration: BoxDecoration(
                                           color: Theme.of(context).primaryColor,
@@ -121,25 +123,27 @@ class FabricsTab extends StatelessWidget {
                         elevation: 3,
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         child: Container(
-                          height: 250,
+                          height: 240,
 
                           ///image
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: NetworkImage(
-                                  fabricsTabData.loadedAttributeTerms[index]
-                                              .description !=
-                                          ""
-                                      ? '${fabricsTabData.loadedAttributeTerms[index].description}'
-                                      : Constants.imagePlaceholder,
-                                ),
+                                image: fabricsTabData
+                                            .loadedAttributeTerms[index]
+                                            .description !=
+                                        ''
+                                    ? NetworkImage(
+                                        '${fabricsTabData.loadedAttributeTerms[index].description}')
+                                    : const AssetImage(
+                                            'assets/images/hijab_placeholder.jpg')
+                                        as ImageProvider,
                                 fit: BoxFit.cover),
                           ),
 
                           ///title
                           child: Center(
                             child: Container(
-                              width: 198,
+                              width: 200,
                               height: 30,
                               decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,

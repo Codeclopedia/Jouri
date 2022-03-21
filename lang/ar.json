@@ -3,7 +3,7 @@
     "onSale": "خصومات",
     "login": "تسجيل الدخول"
   },
-  "homeScreen": {
+  "homePage": {
     "collections": "مختارات",
     "fabrics": "الأقمشة",
     "onSale": "تخفيضات",
@@ -11,7 +11,7 @@
     "newIn": "الأحدث",
     "latestProducts": "أحدث المنتجات"
   },
-  "productArchive": {
+  "productArchivePage": {
     "filter": "تصفية",
     "sort": "ترتيب",
     "newest": "الأحدث",
@@ -23,7 +23,14 @@
     "price": "السعر",
     "loadMore": "المزيد"
   },
-  "productDetails": {
-    "addToCart": "إضافة إلى السلة"
+  "productDetailsPage": {
+    "addToCart": "إضافة إلى السلة",
+    "relatedProducts": "منتجات قد تعجبك"
+  },
+  "cartPage": {
+    "emptyCart": "عربة التسوق فارغة",
+    "shoppingCart": "عربة التسوق",
+    "orderSummery": "تفاصيل الطلب",
+    "orderSubtotal": "مجموع الطلب"
   }
 }

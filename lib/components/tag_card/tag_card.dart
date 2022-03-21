@@ -68,9 +68,12 @@ class TagCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 image: DecorationImage(
-                  image: NetworkImage(
-                    '${tag.description}',
-                  ),
+                  image: tag.description != ''
+                      ? NetworkImage(
+                          '${tag.description}',
+                        )
+                      : const AssetImage('assets/images/hijab_placeholder.jpg')
+                          as ImageProvider,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -143,7 +146,7 @@ class TagCard extends StatelessWidget {
                     tagCardData.navigateToArchiveScreen(
                         context, tag.id, tag.name);
                   },
-                  child: const LocalizedText('homeScreen.shopNow')),
+                  child: const LocalizedText('homePage.shopNow')),
             ],
           ),
         ),

@@ -18,8 +18,8 @@ Future<void> main() async {
 
   runApp(
     KLocalizations.asChangeNotifier(
-      locale: Locale(lang ?? 'ar'),
-      defaultLocale: Locale(lang ?? 'ar'),
+      locale: Locale(lang ?? 'en'),
+      defaultLocale: Locale(lang ?? 'en'),
       supportedLocales: supportedLocales,
       localizationsAssetsPath: 'lang',
       child: const MyApp(),
@@ -123,7 +123,7 @@ class MyApp extends StatelessWidget {
         textTheme: currentLang == 'ar'
             ? GoogleFonts.almaraiTextTheme()
             : GoogleFonts.ralewayTextTheme(),
-        fontFamily: 'Raleway',
+        // fontFamily: 'Raleway',
       ),
       home: ChangeNotifierProvider(
         create: (context) => SplashScreenViewModel(context),

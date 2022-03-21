@@ -3,16 +3,15 @@
     "onSale": "On Sale",
     "login": "Login"
   },
-  "homeScreen": {
+  "homePage": {
     "collections": "collections",
     "fabrics": "Fabrics",
     "onSale": "On Sale",
     "shopNow": "Shop Now",
     "newIn": "New In",
     "latestProducts": "Latest"
-
   },
-  "productArchive": {
+  "productArchivePage": {
     "filter": "Filter",
     "sort": "Sort",
     "newest": "newest",
@@ -24,7 +23,14 @@
     "price": "price",
     "loadMore": "load more"
   },
-  "productDetails": {
-    "addToCart": "add to cart"
+  "productDetailsPage": {
+    "addToCart": "add to cart",
+    "relatedProducts": "you may also like"
+  },
+  "cartPage": {
+    "emptyCart": "Your Cart is empty",
+    "shoppingCart": "Shopping Bag",
+    "orderSummery": "order summery",
+    "orderSubtotal": "order subtotal"
   }
 }

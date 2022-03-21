@@ -47,7 +47,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         children: [
           ListTile(
             title: Text(
-              General.getTranslatedText(context, 'productArchive.filter'),
+              General.getTranslatedText(context, 'productArchivePage.filter'),
               style: sheetTitleStyle,
             ),
             trailing: IconButton(
@@ -59,7 +59,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           ),
           ListTile(
             title: Text(
-                General.getTranslatedText(context, 'productArchive.price')),
+                General.getTranslatedText(context, 'productArchivePage.price')),
             leading: const Icon(Icons.monetization_on_outlined),
             minLeadingWidth: 20,
           ),
@@ -99,7 +99,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     },
                     child: Text(
                       General.getTranslatedText(
-                          context, 'productArchive.reset'),
+                          context, 'productArchivePage.reset'),
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary),
                     ),
@@ -114,7 +114,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                       Navigator.of(context).pop(values);
                     },
                     child: Text(General.getTranslatedText(
-                        context, 'productArchive.apply')),
+                        context, 'productArchivePage.apply')),
                   ),
                 ),
               ],
