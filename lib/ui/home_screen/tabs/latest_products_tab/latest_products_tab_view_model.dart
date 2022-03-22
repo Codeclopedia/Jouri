@@ -70,17 +70,19 @@ class LatestProductsTabViewModel extends ChangeNotifier {
                 category: false,
                 attribute: false,
                 allProducts: true,
+                onSale: false,
                 name: name,
               ),
               child: const ProductArchiveScreen(),
             )));
   }
 
-  navigateToProductDetailsScreen(context,Product gridItem) {
-    var isVariable=gridItem.type=='variable'?true:false;
+  navigateToProductDetailsScreen(context, Product gridItem) {
+    var isVariable = gridItem.type == 'variable' ? true : false;
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) => ChangeNotifierProvider(
-        create: (context) => ProductDetailsViewModel(product: gridItem,isVariable: isVariable),
+        create: (context) =>
+            ProductDetailsViewModel(product: gridItem, isVariable: isVariable),
         child: const ProductDetailsScreen(),
       ),
     ));

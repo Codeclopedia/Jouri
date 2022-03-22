@@ -12,7 +12,7 @@ import '../bottom_sheets/filter_bottom_sheet.dart';
 import '../bottom_sheets/sort_bottom_sheet.dart';
 
 class ProductArchiveViewModel extends ChangeNotifier {
-  final bool tag, category, attribute, allProducts;
+  final bool tag, category, attribute, allProducts, onSale;
   final int? id;
   final String? name, description, parentCat;
 
@@ -21,6 +21,7 @@ class ProductArchiveViewModel extends ChangeNotifier {
       required this.category,
       required this.attribute,
       required this.allProducts,
+      required this.onSale,
       this.id,
       this.name,
       this.description,
@@ -79,6 +80,8 @@ class ProductArchiveViewModel extends ChangeNotifier {
             loadedProducts.add(Product.fromMap(element));
           });
           totalPage = int.parse(map[Constants.totalPagesKey] ?? '1');
+          print('total pages: $totalPage');
+          notifyListeners();
         },
         error: () {});
 

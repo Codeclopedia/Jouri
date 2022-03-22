@@ -215,7 +215,7 @@ class General {
     await sp.setBool(key, data);
   }
 
-  ///
+  /// cart methods
 
   static FlutterCart? _cart;
   static final _box = GetStorage();
@@ -340,6 +340,23 @@ class General {
   }
 
   ///
+
+  static void setFavSP(data) async {
+    final sp = await SharedPreferences.getInstance();
+    var stringData;
+    if (data is Set) {
+      stringData = json.encode(data.toList());
+    } else {
+      stringData = json.encode(data);
+    }
+    await sp.setString('fav', stringData);
+  }
+
+  static Future<String?> getFavSP() async {
+    final sp = await SharedPreferences.getInstance();
+    var data = sp.getString('fav');
+    return data;
+  }
 
   static final countryList = [
     "Afghanistan",

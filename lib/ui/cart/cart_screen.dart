@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/cart_card/cart_card.dart';
-import '../../components/cart_card/cart_card_view_model.dart';
+import '../../components/cart_card.dart';
 import '../../components/loading.dart';
 import '../../models/product.dart';
 import '../../utilities/general.dart';
@@ -105,16 +104,13 @@ class CartScreen extends StatelessWidget {
                                                     begin: const Offset(-1, 0),
                                                     end: const Offset(0, 0),
                                                   ).animate(animation),
-                                                  child: ChangeNotifierProvider(
-                                                      create: (context) =>
-                                                          CartCardViewModel(
-                                                            product: snapshot
-                                                                .data![index],
-                                                            cartItem: item!,
-                                                            // recalculatePrice: _changePrice,
-                                                            // removeProductFromCart: _removeCartItem,
-                                                          ),
-                                                      child: const CartCard())),
+                                                  child: CartCard(
+                                                    product:
+                                                        snapshot.data![index],
+                                                    cartItem: item!,
+                                                    // recalculatePrice: _changePrice,
+                                                    // removeProductFromCart: _removeCartItem,
+                                                  )),
                                             ],
                                           );
                                         },

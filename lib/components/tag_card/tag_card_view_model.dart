@@ -19,6 +19,7 @@ class TagCardViewModel extends ChangeNotifier {
                 category: false,
                 attribute: false,
                 allProducts: false,
+                onSale: false,
                 id: id,
                 name: tagName,
               ),

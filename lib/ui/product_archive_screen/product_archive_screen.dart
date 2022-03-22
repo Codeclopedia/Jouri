@@ -160,7 +160,7 @@ class ProductArchiveScreen extends StatelessWidget {
                             archiveData.filterProduct(context);
                           },
                           child: LocalizedText(
-                            'productArchive.filter',
+                            'productArchivePage.filter',
                             style: buttonTextStyle,
                           ),
                         ),
@@ -177,7 +177,7 @@ class ProductArchiveScreen extends StatelessWidget {
                             archiveData.sortProduct(context);
                           },
                           child: LocalizedText(
-                            'productArchive.sort',
+                            'productArchivePage.sort',
                             style: buttonTextStyle,
                           ),
                         ),
@@ -194,29 +194,37 @@ class ProductArchiveScreen extends StatelessWidget {
                                 archiveData.loadProducts(context, currentLang),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const ScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return ChangeNotifierProvider(
-                                      create: (context) => ProductCardViewModel(
-                                          product: snapshot.data![index]),
-                                      child: ProductCard(
-                                        gridItem: snapshot.data![index],
-                                        currentLang: currentLang,
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      child: GridView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return ChangeNotifierProvider(
+                                            create: (context) =>
+                                                ProductCardViewModel(
+                                                    product:
+                                                        snapshot.data![index]),
+                                            child: ProductCard(
+                                              gridItem: snapshot.data![index],
+                                              currentLang: currentLang,
+                                            ),
+                                          );
+                                        },
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 9 / 16,
+                                          mainAxisSpacing: 20,
+                                          crossAxisSpacing: 15,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 9 / 16,
-                                    mainAxisSpacing: 20,
-                                    crossAxisSpacing: 15,
-                                  ),
+                                    ),
+                                  ],
                                 );
                               } else {
                                 return GridView.count(
@@ -237,7 +245,7 @@ class ProductArchiveScreen extends StatelessWidget {
                             })
                         : GridView.builder(
                             shrinkWrap: true,
-                            physics: const ScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
                             itemCount: archiveData.loadedProducts.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -260,7 +268,7 @@ class ProductArchiveScreen extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    archiveData.page != archiveData.totalPage ||
+                    archiveData.page != archiveData.totalPage &&
                             archiveData.totalPage > 1
                         ? Column(
                             children: [
@@ -272,7 +280,7 @@ class ProductArchiveScreen extends StatelessWidget {
                                             context, currentLang);
                                       },
                                       child: const LocalizedText(
-                                          'productArchive.loadMore'))),
+                                          'productArchivePage.loadMore'))),
                               const SizedBox(
                                 height: 30,
                               ),

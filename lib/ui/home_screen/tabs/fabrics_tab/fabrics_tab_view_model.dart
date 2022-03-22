@@ -45,6 +45,7 @@ class FabricsTabViewModel extends ChangeNotifier {
                   category: false,
                   attribute: true,
                   allProducts: false,
+                  onSale: false,
                   id: id,
                   name: fabricName,
                   description: fabricDescription),

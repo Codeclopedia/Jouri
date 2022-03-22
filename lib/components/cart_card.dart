@@ -1,23 +1,23 @@
-import 'package:Jouri/components/cart_card/cart_card_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/model/cart_model.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/product.dart';
+import '../models/product.dart';
+import '../models/product_variation.dart';
+import '../ui/cart/cart_view_model.dart';
 
 class CartCard extends StatelessWidget {
-  const CartCard({
-    Key? key,
-  }) : super(key: key);
+  final Product product;
+  final CartItem cartItem;
+  const CartCard({Key? key, required this.product, required this.cartItem});
 
   @override
   Widget build(BuildContext context) {
-    var cartData = Provider.of<CartCardViewModel>(context, listen: false);
-
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var currency = currentLang == 'ar' ? ' د.ك' : ' DK';
+    var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
+    ProductVariation? selectedVariation = cartItem.productDetails;
 
     var nameStyle = TextStyle(
       color: Theme.of(context).primaryColor,
@@ -46,9 +46,9 @@ class CartCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                     image: NetworkImage(
-                      cartData.cartItem.productDetails != null
-                          ? cartData.cartItem.productDetails!.image!.src!
-                          : cartData.product.images!.first.src!,
+                      selectedVariation != null
+                          ? selectedVariation.image!.src!
+                          : product.images!.first.src!,
                     ),
                     fit: BoxFit.cover)),
           ),
@@ -60,7 +60,7 @@ class CartCard extends StatelessWidget {
                 ///name
                 Flexible(
                     child: Text(
-                  cartData.product.name!,
+                  product.name!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: nameStyle,
@@ -68,15 +68,15 @@ class CartCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                cartData.product.type == 'variable'
+                product.type == 'variable'
                     ?
 
                     /// attributes
-                    cartData.selectedVariation != null
+                    selectedVariation != null
                         ? Flexible(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: cartData.selectedVariation!.attributes!
+                              children: selectedVariation.attributes!
                                   .map((e) => Row(
                                         children: [
                                           Text(
@@ -103,24 +103,21 @@ class CartCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ///price
-                    cartData.product.type == 'variable'
+                    product.type == 'variable'
                         ?
 
                         ///variable
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              cartData.selectedVariation != null &&
-                                      cartData.selectedVariation!.price != ''
+                              selectedVariation != null &&
+                                      selectedVariation.price != ''
 
                                   ///variation has price --> view it
                                   ? Text(
-                                      cartData.selectedVariation!
-                                              .regularPrice! +
+                                      selectedVariation.regularPrice! +
                                           currency,
-                                      style: cartData
-                                                  .selectedVariation!.onSale ==
-                                              true
+                                      style: selectedVariation.onSale == true
                                           ? priceStyle.copyWith(
                                               decoration:
                                                   TextDecoration.lineThrough)
@@ -128,8 +125,7 @@ class CartCard extends StatelessWidget {
                                     )
 
                                   ///variation has no price --> view product price
-                                  : Text(
-                                      cartData.product.regularPrice! + currency,
+                                  : Text(product.regularPrice! + currency,
                                       style: priceStyle),
                               const SizedBox(
                                 width: 15,
@@ -137,12 +133,11 @@ class CartCard extends StatelessWidget {
 
                               /// if on sale
 
-                              cartData.selectedVariation != null &&
+                              selectedVariation != null &&
                                       // cartData.selectedVariation!.onSale != null &&
-                                      cartData.selectedVariation!.onSale == true
+                                      selectedVariation.onSale == true
                                   ? Text(
-                                      cartData.selectedVariation!.salePrice! +
-                                          currency,
+                                      selectedVariation.salePrice! + currency,
                                       style: priceStyle.copyWith(
                                           color: const Color(0xffc91f1f)),
                                     )
@@ -155,7 +150,7 @@ class CartCard extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(cartData.product.regularPrice! + currency,
+                              Text(product.regularPrice! + currency,
                                   style: priceStyle),
                               const SizedBox(
                                 width: 15,
@@ -163,10 +158,9 @@ class CartCard extends StatelessWidget {
 
                               /// if on sale
 
-                              cartData.product.onSale != null &&
-                                      cartData.product.onSale == true
+                              product.onSale != null && product.onSale == true
                                   ? Text(
-                                      cartData.product.salePrice! + currency,
+                                      product.salePrice! + currency,
                                       style: priceStyle.copyWith(
                                           color: const Color(0xffc91f1f)),
                                     )
@@ -175,14 +169,13 @@ class CartCard extends StatelessWidget {
                           ),
 
                     ///cart controller
-                    Consumer<CartCardViewModel>(
-                        builder: (context, viewModel, _) {
+                    Consumer<CartViewModel>(builder: (context, viewModel, _) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
                               onPressed: () {
-                                viewModel.decrement();
+                                viewModel.decrement(product, cartItem);
                               },
                               child: const Icon(
                                 Icons.remove,
@@ -194,12 +187,12 @@ class CartCard extends StatelessWidget {
                                 shape: const CircleBorder(),
                               )),
                           Text(
-                            '${viewModel.quantity}',
+                            '${cartItem.quantity}',
                             style: nameStyle.copyWith(fontSize: 14),
                           ),
                           TextButton(
                               onPressed: () {
-                                viewModel.increment();
+                                viewModel.increment(product, cartItem);
                               },
                               child: const Icon(
                                 Icons.add,

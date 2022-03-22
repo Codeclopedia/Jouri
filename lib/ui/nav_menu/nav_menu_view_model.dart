@@ -65,6 +65,7 @@ class NavMenuViewModel extends ChangeNotifier {
                   category: true,
                   attribute: false,
                   allProducts: false,
+                  onSale: false,
                   id: id,
                   name: catName,
                   description: catDescription,
