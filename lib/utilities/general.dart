@@ -313,7 +313,8 @@ class General {
 
   static double getCartPrice() {
     if (_cart == null) initCart();
-    double price = _cart!.getTotalAmount();
+    var price = _cart!.getTotalAmount();
+    price = double.parse(price.toString());
     return price;
   }
 

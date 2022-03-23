@@ -21,7 +21,7 @@ class CartCard extends StatelessWidget {
 
     var nameStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 2.2,
     );
@@ -53,18 +53,19 @@ class CartCard extends StatelessWidget {
                     fit: BoxFit.cover)),
           ),
           Container(
+            width: 260,
             margin: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ///name
-                Flexible(
-                    child: Text(
-                  product.name!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: nameStyle,
-                )),
+                Expanded(
+                  child: Text(
+                    product.name!,
+                    maxLines: 2,
+                    style: nameStyle,
+                  ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -73,7 +74,7 @@ class CartCard extends StatelessWidget {
 
                     /// attributes
                     selectedVariation != null
-                        ? Flexible(
+                        ? Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: selectedVariation.attributes!

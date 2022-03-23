@@ -38,6 +38,8 @@ class OnSaleTabViewModel extends ChangeNotifier {
             loadedProducts.add(Product.fromMap(element));
           });
           totalPage = int.parse(map[Constants.totalPagesKey] ?? '1');
+          print('total pages: $totalPage');
+          notifyListeners();
         },
         error: () {});
 

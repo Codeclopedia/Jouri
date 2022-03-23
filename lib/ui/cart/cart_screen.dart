@@ -129,14 +129,31 @@ class CartScreen extends StatelessWidget {
                                   height: 15,
                                 ),
                                 ListTile(
-                                  title: Text(General.getTranslatedText(
-                                      context, 'cartPage.orderSubtotal')),
+                                  title: Text(
+                                    General.getTranslatedText(
+                                        context, 'cartPage.orderSubtotal'),
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
                                   leading: Icon(
                                     Icons.monetization_on,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   trailing: Text(
-                                      cartData.calculatePrice() + currency),
+                                    cartData.calculatePrice() + currency,
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ),
                                 ),
                                 Row(
                                   children: [

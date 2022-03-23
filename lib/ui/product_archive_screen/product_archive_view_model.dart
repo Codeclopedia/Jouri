@@ -95,20 +95,24 @@ class ProductArchiveViewModel extends ChangeNotifier {
       if (category) {
         url = Constants.baseUrl +
             Constants.products +
-            '/$id' +
             Constants.wooAuth +
-            '&page=$page&lang=$lang';
+            '&category=$id&page=$page&lang=$lang';
       } else if (tag) {
         url = Constants.baseUrl +
             Constants.tags +
             '/$id' +
             Constants.wooAuth +
-            '&page=$page&lang=$lang';
+            '&tag=$id&page=$page&lang=$lang';
       } else if (attribute) {
         url = Constants.baseUrl +
             Constants.products +
             Constants.wooAuth +
             '&${Constants.productByFabricAttributeTerm}$id&page=$page&lang=$lang';
+      } else if (allProducts) {
+        url = Constants.baseUrl +
+            Constants.products +
+            Constants.wooAuth +
+            '&page=$page&lang=$lang';
       }
       saving = true;
       await HttpRequests.httpGetRequest(

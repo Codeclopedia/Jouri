@@ -136,7 +136,7 @@ class OnSaleTab extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          onSaleTabData.page != onSaleTabData.totalPage ||
+          onSaleTabData.page != onSaleTabData.totalPage &&
                   onSaleTabData.totalPage > 1
               ? Column(
                   children: [
