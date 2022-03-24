@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/product.dart';
+
 class General {
   // static ArsProgressDialog _progressDialog;
   static SimpleFontelicoProgressDialog? _dialog;
@@ -219,6 +221,36 @@ class General {
 
   static FlutterCart? _cart;
   static final _box = GetStorage();
+
+  static Set<Product> getFav() {
+    Set<Product> items = {};
+    if (_box.hasData('fav')) {
+      var data = json.decode(_box.read('fav'));
+      data.forEach((element) {
+        items.add(Product.fromJson(element));
+        print(element);
+      });
+    }
+    return items;
+  }
+
+  static void addToFav(product) {
+    Set<Product> favProducts = getFav();
+    favProducts.add(product);
+    var set = favProducts.map((e) => e.toJson()).toList();
+    var data = jsonEncode(set);
+    _box.write('fav', data);
+    print(' ${product.id} added to fav');
+  }
+
+  static void removeFromFav(product) async {
+    Set<Product> favProducts = getFav();
+    favProducts.removeWhere((element) => element.id == product.id);
+    var set = favProducts.map((e) => e.toJson()).toList();
+    var data = jsonEncode(set);
+    _box.write('fav', data);
+    print(' ${product.id} removed from fav');
+  }
 
   static void initCart() async {
     _cart = FlutterCart();

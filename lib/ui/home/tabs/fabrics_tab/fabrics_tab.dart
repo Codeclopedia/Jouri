@@ -1,4 +1,4 @@
-import 'package:Jouri/ui/home_screen/tabs/fabrics_tab/fabrics_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/fabrics_tab/fabrics_tab_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../components/product_loading.dart';
 import '../../../../models/attribute_term.dart';
-import '../../../../utilities/constants.dart';
 
 class FabricsTab extends StatelessWidget {
   const FabricsTab({Key? key}) : super(key: key);

@@ -63,11 +63,27 @@ class NavMenu extends StatelessWidget {
               textDirection: direction,
               style: itemStyle,
             ),
-            onTap: () {},
+            onTap: () {
+              navMenuData.navigateToArchiveScreenAsOnSale(context);
+            },
           ),
           ListTile(
             leading: Icon(
-              Icons.person,
+              Icons.favorite_border,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            title: LocalizedText(
+              'navMenu.favourite',
+              textDirection: direction,
+              style: itemStyle,
+            ),
+            onTap: () {
+              navMenuData.navigateToFavourite(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person_outlined,
               color: Theme.of(context).colorScheme.secondary,
             ),
             title: LocalizedText(
@@ -94,7 +110,7 @@ class NavMenu extends StatelessWidget {
                           ? ExpansionTile(
                               title: InkWell(
                                 onTap: () {
-                                  navMenuData.navigateToArchiveScreen(
+                                  navMenuData.navigateToArchiveScreenAsCategory(
                                       context,
                                       snapshot0.data![index].id,
                                       snapshot0.data![index].name,
@@ -150,7 +166,7 @@ class NavMenu extends StatelessWidget {
                                                       title: InkWell(
                                                         onTap: () {
                                                           navMenuData
-                                                              .navigateToArchiveScreen(
+                                                              .navigateToArchiveScreenAsCategory(
                                                                   context,
                                                                   snapshot1
                                                                       .data![i]
@@ -253,7 +269,7 @@ class NavMenu extends StatelessWidget {
                                                                             //       ),
                                                                             onTap:
                                                                                 () {
-                                                                              navMenuData.navigateToArchiveScreen(context, snapshot2.data![y].id, snapshot2.data![y].name, snapshot2.data![y].description, snapshot1.data![i].name);
+                                                                              navMenuData.navigateToArchiveScreenAsCategory(context, snapshot2.data![y].id, snapshot2.data![y].name, snapshot2.data![y].description, snapshot1.data![i].name);
                                                                             },
                                                                           );
                                                                         });
@@ -291,7 +307,7 @@ class NavMenu extends StatelessWidget {
                                                       //       ),
                                                       onTap: () {
                                                         navMenuData
-                                                            .navigateToArchiveScreen(
+                                                            .navigateToArchiveScreenAsCategory(
                                                                 context,
                                                                 snapshot1
                                                                     .data![i]
@@ -336,7 +352,7 @@ class NavMenu extends StatelessWidget {
                               //         '',
                               //       ),
                               onTap: () {
-                                navMenuData.navigateToArchiveScreen(
+                                navMenuData.navigateToArchiveScreenAsCategory(
                                     context,
                                     snapshot0.data![index].id,
                                     snapshot0.data![index].name,

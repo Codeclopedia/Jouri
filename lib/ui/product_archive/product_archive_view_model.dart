@@ -12,19 +12,19 @@ import '../bottom_sheets/filter_bottom_sheet.dart';
 import '../bottom_sheets/sort_bottom_sheet.dart';
 
 class ProductArchiveViewModel extends ChangeNotifier {
-  final bool tag, category, attribute, allProducts, onSale;
-  final int? id;
-  final String? name, description, parentCat;
+  final bool tag, category, attribute, latest, onSale;
+  final int? archiveId;
+  final String? archiveName, archiveDescription, parentCat;
 
   ProductArchiveViewModel(
       {required this.tag,
       required this.category,
       required this.attribute,
-      required this.allProducts,
+      required this.latest,
       required this.onSale,
-      this.id,
-      this.name,
-      this.description,
+      this.archiveId,
+      this.archiveName,
+      this.archiveDescription,
       this.parentCat});
 
   List<Product> loadedProducts = [];
@@ -43,28 +43,33 @@ class ProductArchiveViewModel extends ChangeNotifier {
       url = Constants.baseUrl +
           Constants.products +
           Constants.wooAuth +
-          '&category=$id&lang=$lang';
+          '&category=$archiveId&lang=$lang';
 
       /// product by tag
     } else if (tag) {
       url = Constants.baseUrl +
           Constants.products +
           Constants.wooAuth +
-          '&tag=$id&lang=$lang';
+          '&tag=$archiveId&lang=$lang';
 
       /// product by attribute
     } else if (attribute) {
       url = Constants.baseUrl +
           Constants.products +
           Constants.wooAuth +
-          '&${Constants.productByFabricAttributeTerm}$id&lang=$lang';
+          '&${Constants.productByFabricAttributeTerm}$archiveId&lang=$lang';
 
       /// all products
-    } else if (allProducts) {
+    } else if (latest) {
       url = Constants.baseUrl +
           Constants.products +
           Constants.wooAuth +
           '&lang=$lang';
+    } else if (onSale) {
+      url = Constants.baseUrl +
+          Constants.products +
+          Constants.wooAuth +
+          '&on_sale=true&lang=$lang';
     }
 
     url += sort ?? '';
@@ -96,23 +101,28 @@ class ProductArchiveViewModel extends ChangeNotifier {
         url = Constants.baseUrl +
             Constants.products +
             Constants.wooAuth +
-            '&category=$id&page=$page&lang=$lang';
+            '&category=$archiveId&page=$page&lang=$lang';
       } else if (tag) {
         url = Constants.baseUrl +
             Constants.tags +
-            '/$id' +
+            '/$archiveId' +
             Constants.wooAuth +
-            '&tag=$id&page=$page&lang=$lang';
+            '&tag=$archiveId&page=$page&lang=$lang';
       } else if (attribute) {
         url = Constants.baseUrl +
             Constants.products +
             Constants.wooAuth +
-            '&${Constants.productByFabricAttributeTerm}$id&page=$page&lang=$lang';
-      } else if (allProducts) {
+            '&${Constants.productByFabricAttributeTerm}$archiveId&page=$page&lang=$lang';
+      } else if (latest) {
         url = Constants.baseUrl +
             Constants.products +
             Constants.wooAuth +
             '&page=$page&lang=$lang';
+      } else if (onSale) {
+        url = Constants.baseUrl +
+            Constants.products +
+            Constants.wooAuth +
+            '&on_sale=true&page=$page&lang=$lang';
       }
       saving = true;
       await HttpRequests.httpGetRequest(

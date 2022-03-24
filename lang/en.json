@@ -1,7 +1,8 @@
 {
   "navMenu": {
     "onSale": "On Sale",
-    "login": "Login"
+    "login": "Login",
+    "favourite": "Favourites"
   },
   "homePage": {
     "collections": "collections",
@@ -32,5 +33,8 @@
     "shoppingCart": "Shopping Bag",
     "orderSummery": "order summery",
     "orderSubtotal": "order subtotal"
+  },
+  "favouritePage": {
+    "emptyFavourite": "Your favourite list is empty"
   }
 }

@@ -9,8 +9,9 @@ import '../../../../models/mobile_banner.dart';
 import '../../../../models/product.dart';
 import '../../../../utilities/constants.dart';
 import '../../../../utilities/http_requests.dart';
-import '../../../product_archive_screen/product_archive_screen.dart';
-import '../../../product_archive_screen/product_archive_view_model.dart';
+
+import '../../../product_archive/product_archive_screen.dart';
+import '../../../product_archive/product_archive_view_model.dart';
 import '../../../product_details_screen/product_details_screen.dart';
 import '../../../product_details_screen/product_details_view_model.dart';
 
@@ -62,16 +63,15 @@ class LatestProductsTabViewModel extends ChangeNotifier {
     return loadedData;
   }
 
-  navigateToArchiveScreen(context, name) {
+  navigateToArchiveScreen(context) {
     Navigator.of(context).push(CupertinoPageRoute(
         builder: (context) => ChangeNotifierProvider(
               create: (context) => ProductArchiveViewModel(
                 tag: false,
                 category: false,
                 attribute: false,
-                allProducts: true,
+                latest: true,
                 onSale: false,
-                name: name,
               ),
               child: const ProductArchiveScreen(),
             )));

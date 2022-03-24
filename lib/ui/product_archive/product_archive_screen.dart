@@ -1,4 +1,4 @@
-import 'package:Jouri/ui/product_archive_screen/product_archive_view_model.dart';
+import 'package:Jouri/ui/product_archive/product_archive_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,7 @@ import '../../components/product_loading.dart';
 import '../../models/product.dart';
 import '../app_bar/app_bar.dart';
 import '../app_bar/app_bar_view_model.dart';
+import '../cart/cart_view_model.dart';
 
 class ProductArchiveScreen extends StatelessWidget {
   const ProductArchiveScreen({Key? key}) : super(key: key);
@@ -19,15 +20,11 @@ class ProductArchiveScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var archiveData = Provider.of<ProductArchiveViewModel>(context);
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var tagStyle = const TextStyle(
-      color: Colors.white,
-      fontSize: 13,
-    );
+
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 21,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 4.2,
     );
     var descriptionStyle = TextStyle(
@@ -35,22 +32,19 @@ class ProductArchiveScreen extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       fontSize: 14,
       fontWeight: FontWeight.w300,
-      fontStyle: FontStyle.normal,
     );
 
     var buttonTextStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 2.8,
     );
 
     var breadcrumbsStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 1.4,
     );
 
@@ -60,9 +54,17 @@ class ProductArchiveScreen extends StatelessWidget {
           child: Column(
             children: [
               /// app bar
-              ChangeNotifierProvider(
+              // ChangeNotifierProvider(
+              //     create: (context) => AppBarViewModel(withCartButton: true),
+              //     child: const AppBarSection()),
+              MultiProvider(providers: [
+                ChangeNotifierProvider(
                   create: (context) => AppBarViewModel(withCartButton: true),
-                  child: const AppBarSection()),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => CartViewModel(),
+                ),
+              ], child: const AppBarSection()),
               const SizedBox(
                 height: 20,
               ),
@@ -80,7 +82,7 @@ class ProductArchiveScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                archiveData.name!,
+                                archiveData.archiveName!,
                                 style: titleStyle,
                                 textAlign: TextAlign.center,
                               ),
@@ -107,9 +109,16 @@ class ProductArchiveScreen extends StatelessWidget {
                             ],
                           )
                         : Container(),
-                    archiveData.allProducts
+                    archiveData.latest
                         ? LocalizedText(
-                            '${archiveData.name}',
+                            'homePage.newIn',
+                            style: titleStyle,
+                            textAlign: TextAlign.center,
+                          )
+                        : Container(),
+                    archiveData.onSale
+                        ? LocalizedText(
+                            'navMenu.onSale',
                             style: titleStyle,
                             textAlign: TextAlign.center,
                           )
@@ -126,7 +135,7 @@ class ProductArchiveScreen extends StatelessWidget {
                                   ),
                                   const Text(' / '),
                                   Text(
-                                    archiveData.name!,
+                                    archiveData.archiveName!,
                                     style: breadcrumbsStyle,
                                   )
                                 ],
@@ -134,7 +143,7 @@ class ProductArchiveScreen extends StatelessWidget {
                             : Row(
                                 children: [
                                   Text(
-                                    archiveData.name!,
+                                    archiveData.archiveName!,
                                     style: breadcrumbsStyle,
                                   ),
                                 ],

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Jouri/ui/favourites/favourite_screen.dart';
+import 'package:Jouri/ui/favourites/favourite_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +10,8 @@ import 'package:provider/provider.dart';
 import '../../models/category.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/http_requests.dart';
-import '../product_archive_screen/product_archive_screen.dart';
-import '../product_archive_screen/product_archive_view_model.dart';
+import '../product_archive/product_archive_screen.dart';
+import '../product_archive/product_archive_view_model.dart';
 
 class NavMenuViewModel extends ChangeNotifier {
   List<Category> loadedCategories = [];
@@ -57,20 +59,43 @@ class NavMenuViewModel extends ChangeNotifier {
     return loadedData;
   }
 
-  navigateToArchiveScreen(context, id, catName, catDescription, parentCat) {
+  navigateToArchiveScreenAsCategory(
+      context, id, catName, catDescription, parentCat) {
     Navigator.of(context).push(CupertinoPageRoute(
         builder: (context) => ChangeNotifierProvider(
               create: (context) => ProductArchiveViewModel(
                   tag: false,
                   category: true,
                   attribute: false,
-                  allProducts: false,
+                  latest: false,
                   onSale: false,
-                  id: id,
-                  name: catName,
-                  description: catDescription,
+                  archiveId: id,
+                  archiveName: catName,
+                  archiveDescription: catDescription,
                   parentCat: parentCat),
               child: const ProductArchiveScreen(),
+            )));
+  }
+
+  navigateToArchiveScreenAsOnSale(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => ProductArchiveViewModel(
+                tag: false,
+                category: false,
+                attribute: false,
+                latest: false,
+                onSale: true,
+              ),
+              child: const ProductArchiveScreen(),
+            )));
+  }
+
+  navigateToFavourite(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => FavouriteViewModel(),
+              child: const FavouriteScreen(),
             )));
   }
 }

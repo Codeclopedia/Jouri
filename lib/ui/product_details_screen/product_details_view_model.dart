@@ -18,7 +18,9 @@ class ProductDetailsViewModel extends ChangeNotifier {
   final Product product;
   final bool isVariable;
 
-  ProductDetailsViewModel({required this.product, required this.isVariable});
+  ProductDetailsViewModel({required this.product, required this.isVariable}) {
+    checkIfIsFav();
+  }
 
   List<ProductVariation> loadedVariations = [];
   ProductVariation? selectedVariation;
@@ -63,7 +65,24 @@ class ProductDetailsViewModel extends ChangeNotifier {
 
   addToFav() {
     isFav = !isFav;
+    General.addToFav(product);
     notifyListeners();
+  }
+
+  removeFromFav() {
+    isFav = !isFav;
+    General.removeFromFav(product);
+    notifyListeners();
+  }
+
+  checkIfIsFav() {
+    var favProducts = General.getFav();
+    favProducts.forEach((element) {
+      if (element.id == product.id) {
+        isFav = true;
+        notifyListeners();
+      }
+    });
   }
 
   ///linking color swatches with variations process

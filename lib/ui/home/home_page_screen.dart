@@ -1,20 +1,21 @@
 import 'package:Jouri/ui/app_bar/app_bar.dart';
 import 'package:Jouri/ui/app_bar/app_bar_view_model.dart';
-import 'package:Jouri/ui/home_screen/home_page_view_model.dart';
-import 'package:Jouri/ui/home_screen/tabs/collections_tab/collections_tab.dart';
-import 'package:Jouri/ui/home_screen/tabs/collections_tab/collections_tab_view_model.dart';
-import 'package:Jouri/ui/home_screen/tabs/fabrics_tab/fabrics_tab.dart';
-import 'package:Jouri/ui/home_screen/tabs/fabrics_tab/fabrics_tab_view_model.dart';
-import 'package:Jouri/ui/home_screen/tabs/latest_products_tab/latest_products_tab.dart';
-import 'package:Jouri/ui/home_screen/tabs/latest_products_tab/latest_products_tab_view_model.dart';
-import 'package:Jouri/ui/home_screen/tabs/on_sale_tab/on_sale_tab.dart';
-import 'package:Jouri/ui/home_screen/tabs/on_sale_tab/on_sale_tab_view_model.dart';
+import 'package:Jouri/ui/home/home_page_view_model.dart';
+import 'package:Jouri/ui/home/tabs/collections_tab/collections_tab.dart';
+import 'package:Jouri/ui/home/tabs/collections_tab/collections_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/fabrics_tab/fabrics_tab.dart';
+import 'package:Jouri/ui/home/tabs/fabrics_tab/fabrics_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/latest_products_tab/latest_products_tab.dart';
+import 'package:Jouri/ui/home/tabs/latest_products_tab/latest_products_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/on_sale_tab/on_sale_tab.dart';
+import 'package:Jouri/ui/home/tabs/on_sale_tab/on_sale_tab_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../cart/cart_view_model.dart';
 import '../nav_menu/nav_menu.dart';
 import '../nav_menu/nav_menu_view_model.dart';
 
@@ -41,9 +42,14 @@ class HomePageScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               /// app bar
-              ChangeNotifierProvider(
+              MultiProvider(providers: [
+                ChangeNotifierProvider(
                   create: (context) => AppBarViewModel(withCartButton: true),
-                  child: const AppBarSection()),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => CartViewModel(),
+                ),
+              ], child: const AppBarSection()),
 
               /// body
               Container(

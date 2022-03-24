@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../ui/product_archive_screen/product_archive_screen.dart';
-import '../../ui/product_archive_screen/product_archive_view_model.dart';
+import '../../ui/product_archive/product_archive_screen.dart';
+import '../../ui/product_archive/product_archive_view_model.dart';
+
 
 class TagCardViewModel extends ChangeNotifier {
   navigateToArchiveScreen(
@@ -18,10 +19,10 @@ class TagCardViewModel extends ChangeNotifier {
                 tag: true,
                 category: false,
                 attribute: false,
-                allProducts: false,
+                latest: false,
                 onSale: false,
-                id: id,
-                name: tagName,
+                archiveId: id,
+                archiveName: tagName,
               ),
               child: const ProductArchiveScreen(),
             )));

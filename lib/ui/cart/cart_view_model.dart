@@ -16,15 +16,12 @@ class CartViewModel extends ChangeNotifier {
 
   Future<List<Product>> loadCart(context) async {
     if (cartProducts.isNotEmpty) return cartProducts;
-    List<CartItem> cartItems = General.getCartItems();
+    List<int> cartIds = General.getCartIds();
 
-    ///
-    var productIdsString = cartItems.map((e) => e.productId).toString();
+    var productIdsString = cartIds.map((e) => e).toString();
     productIdsString = productIdsString
         .substring(1, productIdsString.length - 1)
         .replaceAll(', ', ',');
-
-    ///
     print('include: $productIdsString');
     var url = Constants.baseUrl +
         Constants.products +
@@ -46,29 +43,6 @@ class CartViewModel extends ChangeNotifier {
   }
 
   String calculatePrice() {
-    // List<CartItem> cartItems = General.getCartItems();
-    //
-    // var total = 0.0;
-    // cartItems.forEach((element) {
-    //   total += element.unitPrice * element.quantity;
-    //   General.updateCart(
-    //       productId: element.productId,
-    //       unitPrice: element.unitPrice,
-    //       variation: element.productDetails);
-    // });
-    //
-    // // data.forEach((element) {
-    // //   var item = General.getSpecificCart(productId: int.parse(
-    // //       // element.translations.ar??
-    // //       '${element.id}'));
-    // //   item ??= General.getSpecificCart(productId: int.parse(
-    // //       // element.translations.en??
-    // //       '${element.id}'));
-    // //   total += (double.parse(element.price!)) * item!.quantity;
-    // //   General.updateCart(
-    // //       productId: item.productId, unitPrice: double.parse(element.price!));
-    // // });
-    // return '$total KD';
     var total = General.getCartPrice().toString();
     return total;
   }
@@ -84,12 +58,12 @@ class CartViewModel extends ChangeNotifier {
       cartItem.quantity = cartItem.quantity;
       print('new quantity: ${cartItem.quantity}');
       HapticFeedback.vibrate();
-      notifyListeners();
+      // notifyListeners();
     } else {
       General.removeCartItem(productId: product.id);
       print('${product.id} deleted');
       HapticFeedback.vibrate();
-      notifyListeners();
+      // notifyListeners();
     }
     calculatePrice();
     recalculateCartCount();
@@ -105,7 +79,7 @@ class CartViewModel extends ChangeNotifier {
         cartItem.quantity = cartItem.quantity;
         print('new quantity: ${cartItem.quantity}');
         HapticFeedback.vibrate();
-        notifyListeners();
+        // notifyListeners();
       } else {
         return SnackBar(
             content: Text(
@@ -118,7 +92,7 @@ class CartViewModel extends ChangeNotifier {
         );
         print('new quantity: ${cartItem.quantity}');
         HapticFeedback.vibrate();
-        notifyListeners();
+        // notifyListeners();
       } else {
         return SnackBar(
             content: Text('not available more than ${product.stockQuantity}'));
@@ -133,33 +107,4 @@ class CartViewModel extends ChangeNotifier {
     print('cart count: $cartCount');
     notifyListeners();
   }
-
-// String calculatePrice() {
-//   // List<CartItem> cartItems = General.getCartItems();
-//   //
-//   // var total = 0.0;
-//   // cartItems.forEach((element) {
-//   //   total += element.unitPrice * element.quantity;
-//   //   General.updateCart(
-//   //       productId: element.productId,
-//   //       unitPrice: element.unitPrice,
-//   //       variation: element.productDetails);
-//   // });
-//   //
-//   // // data.forEach((element) {
-//   // //   var item = General.getSpecificCart(productId: int.parse(
-//   // //       // element.translations.ar??
-//   // //       '${element.id}'));
-//   // //   item ??= General.getSpecificCart(productId: int.parse(
-//   // //       // element.translations.en??
-//   // //       '${element.id}'));
-//   // //   total += (double.parse(element.price!)) * item!.quantity;
-//   // //   General.updateCart(
-//   // //       productId: item.productId, unitPrice: double.parse(element.price!));
-//   // // });
-//   // return '$total KD';
-//   var total = General.getCartPrice().toString();
-//   return total;
-// }
-
 }

@@ -1,4 +1,4 @@
-import 'package:Jouri/ui/home_screen/tabs/latest_products_tab/latest_products_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/latest_products_tab/latest_products_tab_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -107,7 +107,6 @@ class LatestProductsTab extends StatelessWidget {
                 onPressed: () {
                   latestProductsTabData.navigateToArchiveScreen(
                     context,
-                    'homePage.newIn',
                   );
                 },
               )

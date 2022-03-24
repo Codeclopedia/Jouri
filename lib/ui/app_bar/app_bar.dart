@@ -11,6 +11,7 @@ class AppBarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appBarData = Provider.of<AppBarViewModel>(context, listen: false);
     return Column(
       children: [
         Container(
@@ -27,14 +28,15 @@ class AppBarSection extends StatelessWidget {
         ),
         AppBar(
           actions: [
-            Consumer<AppBarViewModel>(
-              builder: (context, viewModel, _) {
-                return viewModel.withCartButton
-                    ? IconButton(
+            appBarData.withCartButton
+                ? Consumer<CartViewModel>(
+                    builder: (context, viewModel, _) {
+                      return IconButton(
                         onPressed: () {
-                          viewModel.navigateToCart(context);
+                          appBarData.navigateToCart(context);
                         },
                         icon: Badge(
+                            badgeColor: Theme.of(context).colorScheme.secondary,
                             badgeContent: Text(
                               '${viewModel.cartCount}',
                               style: const TextStyle(
@@ -44,10 +46,10 @@ class AppBarSection extends StatelessWidget {
                               CupertinoIcons.bag,
                               color: Theme.of(context).primaryColor,
                             )),
-                      )
-                    : Container();
-              },
-            ),
+                      );
+                    },
+                  )
+                : Container()
           ],
           title: Image.asset(
             'assets/images/logo.png',

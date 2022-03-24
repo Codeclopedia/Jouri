@@ -5,7 +5,7 @@ import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/tag.dart';
-import '../../ui/home_screen/tabs/collections_tab/collections_tab_view_model.dart';
+import '../../ui/home/tabs/collections_tab/collections_tab_view_model.dart';
 
 class TagCard extends StatelessWidget {
   const TagCard({

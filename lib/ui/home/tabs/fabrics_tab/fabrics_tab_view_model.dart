@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import '../../../../models/attribute_term.dart';
 import '../../../../utilities/constants.dart';
 import '../../../../utilities/http_requests.dart';
-import '../../../product_archive_screen/product_archive_screen.dart';
-import '../../../product_archive_screen/product_archive_view_model.dart';
+import '../../../product_archive/product_archive_screen.dart';
+import '../../../product_archive/product_archive_view_model.dart';
 
 class FabricsTabViewModel extends ChangeNotifier {
   List<AttributeTerm> loadedAttributeTerms = [];
@@ -44,11 +44,11 @@ class FabricsTabViewModel extends ChangeNotifier {
                   tag: false,
                   category: false,
                   attribute: true,
-                  allProducts: false,
+                  latest: false,
                   onSale: false,
-                  id: id,
-                  name: fabricName,
-                  description: fabricDescription),
+                  archiveId: id,
+                  archiveName: fabricName,
+                  archiveDescription: fabricDescription),
               child: const ProductArchiveScreen(),
             )));
   }

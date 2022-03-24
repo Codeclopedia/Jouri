@@ -14,6 +14,7 @@ import '../../models/attribute_term.dart';
 import '../../models/product.dart';
 import '../../models/product_variation.dart';
 import '../app_bar/app_bar_view_model.dart';
+import '../cart/cart_view_model.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({Key? key}) : super(key: key);
@@ -49,9 +50,17 @@ class ProductDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ///app bar
-                ChangeNotifierProvider(
+                // ChangeNotifierProvider(
+                //     create: (context) => AppBarViewModel(withCartButton: true),
+                //     child: const AppBarSection()),
+                MultiProvider(providers: [
+                  ChangeNotifierProvider(
                     create: (context) => AppBarViewModel(withCartButton: true),
-                    child: const AppBarSection()),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (context) => CartViewModel(),
+                  ),
+                ], child: const AppBarSection()),
 
                 ///body
                 Container(
@@ -142,7 +151,11 @@ class ProductDetailsScreen extends StatelessWidget {
                                                           .primaryColor,
                                                 ),
                                                 onPressed: () {
-                                                  viewModel.addToFav();
+                                                  if (!viewModel.isFav) {
+                                                    viewModel.addToFav();
+                                                  } else {
+                                                    viewModel.removeFromFav();
+                                                  }
                                                 },
                                               );
                                             }),

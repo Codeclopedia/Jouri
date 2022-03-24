@@ -18,8 +18,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productGridItemData =
-        Provider.of<ProductCardViewModel>(context, listen: false);
+    var productCard = Provider.of<ProductCardViewModel>(context, listen: false);
     var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
     var itemTitleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
@@ -38,7 +37,7 @@ class ProductCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        productGridItemData.navigateToProductDetailsScreen(context, gridItem);
+        productCard.navigateToProductDetailsScreen(context, gridItem);
       },
       child: Container(
         width: 155,
@@ -82,24 +81,25 @@ class ProductCard extends StatelessWidget {
                     child: Stack(
                       children: [
                         IconButton(
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.white,
-                            size: 29,
-                          ),
-                          onPressed: () {
-                            productGridItemData.addToFav();
-                          },
-                        ),
+                            icon: const Icon(
+                              Icons.favorite_border,
+                              color: Colors.white,
+                              size: 29,
+                            ),
+                            onPressed: () {}),
                         IconButton(
                           icon: Icon(
                             Icons.favorite,
-                            color: productGridItemData.isFav
+                            color: productCard.isFav
                                 ? Colors.red
                                 : Theme.of(context).primaryColor,
                           ),
                           onPressed: () {
-                            productGridItemData.addToFav();
+                            if (!viewModel.isFav) {
+                              viewModel.addToFav();
+                            } else {
+                              viewModel.removeFromFav();
+                            }
                           },
                         ),
                       ],

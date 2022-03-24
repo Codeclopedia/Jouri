@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../home_screen/home_page_screen.dart';
-import '../home_screen/home_page_view_model.dart';
-import '../home_screen/tabs/collections_tab/collections_tab.dart';
-import '../home_screen/tabs/collections_tab/collections_tab_view_model.dart';
-import '../home_screen/tabs/fabrics_tab/fabrics_tab.dart';
-import '../home_screen/tabs/fabrics_tab/fabrics_tab_view_model.dart';
+
+import '../home/home_page_screen.dart';
+import '../home/home_page_view_model.dart';
+
 
 class SplashScreenViewModel extends ChangeNotifier {
   final BuildContext context;

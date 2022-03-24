@@ -1,4 +1,4 @@
-import 'package:Jouri/ui/home_screen/tabs/on_sale_tab/on_sale_tab_view_model.dart';
+import 'package:Jouri/ui/home/tabs/on_sale_tab/on_sale_tab_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
