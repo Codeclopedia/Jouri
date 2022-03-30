@@ -19,11 +19,11 @@ class CartScreen extends StatelessWidget {
     final GlobalKey<AnimatedListState> _listKey = GlobalKey();
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
     var currency = currentLang == 'ar' ? ' د.ك' : ' DK';
+
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 21,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 4.2,
     );
 
@@ -180,10 +180,8 @@ class CartScreen extends StatelessWidget {
                                             onPressed: () {
                                               // Navigator.of(context).push(CupertinoPageRoute(builder: (_)=>ShippingMethodsScreen()));
                                             },
-                                            child: Text(
-                                              General.getTranslatedText(
-                                                  context, 'proceed'),
-                                            ),
+                                            child: const LocalizedText(
+                                                'cartPage.proceed'),
                                           ),
                                         ),
                                       ],

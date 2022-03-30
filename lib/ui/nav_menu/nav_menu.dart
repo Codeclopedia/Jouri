@@ -21,27 +21,18 @@ class NavMenu extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 2.8,
     );
-    // TextStyle expansionStyle = TextStyle(
-    //   color: Theme.of(context).primaryColor,
-    //   fontSize: 11,
-    //   fontWeight: FontWeight.w400,
-    //   fontStyle: FontStyle.normal,
-    //   letterSpacing: 2.2,
-    // );
 
     return Drawer(
-      ///load parent category -- level 0
       child: ListView(
         shrinkWrap: true,
         children: [
           ListTile(
-            leading: Icon(
-              Icons.language,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+            // leading: Icon(
+            //   Icons.language,
+            //   color: Theme.of(context).colorScheme.secondary,
+            // ),
             title: Text(
               currentLang == 'ar' ? 'English' : 'عربي',
               textDirection: direction,
@@ -54,45 +45,83 @@ class NavMenu extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.monetization_on_outlined,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+            // leading: Icon(
+            //   Icons.monetization_on_outlined,
+            //   color: Theme.of(context).colorScheme.secondary,
+            // ),
             title: LocalizedText(
               'navMenu.onSale',
               textDirection: direction,
-              style: itemStyle,
+              style: itemStyle.copyWith(color: const Color(0xffc91f1f)),
             ),
             onTap: () {
               navMenuData.navigateToArchiveScreenAsOnSale(context);
             },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.favorite_border,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: LocalizedText(
-              'navMenu.favourite',
-              textDirection: direction,
-              style: itemStyle,
-            ),
-            onTap: () {
-              navMenuData.navigateToFavourite(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.person_outlined,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            title: LocalizedText(
-              'navMenu.login',
-              textDirection: direction,
-              style: itemStyle,
-            ),
-            onTap: () {},
-          ),
+
+          ///my account
+          navMenuData.customer == null
+              ? ListTile(
+                  // leading: Icon(
+                  //   Icons.person_outlined,
+                  //   color: Theme.of(context).colorScheme.secondary,
+                  // ),
+                  title: LocalizedText(
+                    'navMenu.login',
+                    textDirection: direction,
+                    style: itemStyle.copyWith(color: const Color(0xff1fc95a)),
+                  ),
+                  onTap: () {
+                    navMenuData.navigateToLogin(context);
+                  },
+                )
+              : ExpansionTile(title: LocalizedText('navMenu.myAccount',style: itemStyle,),children: [
+                    ListTile(
+                      // leading: Icon(
+                      //   Icons.favorite_border,
+                      //   color: Theme.of(context).colorScheme.secondary,
+                      // ),
+                      title: LocalizedText(
+                        'navMenu.favourite',
+                        textDirection: direction,
+                        style: itemStyle,
+                      ),
+                      onTap: () {
+                        navMenuData.navigateToFavourite(context);
+                      },
+                    ),
+                     ListTile(
+                      title: LocalizedText(
+                        'navMenu.orders',
+                        textDirection: direction,
+                        style: itemStyle,
+                      ),
+                      onTap: () {
+                        // navMenuData.navigateToFavourite(context);
+                      },
+                    ),
+                     ListTile(
+                      title: LocalizedText(
+                        'navMenu.account',
+                        textDirection: direction,
+                        style: itemStyle,
+                      ),
+                      onTap: () {
+                        // navMenuData.navigateToFavourite(context);
+                      },
+                    ),
+                     ListTile(
+                      title: LocalizedText(
+                        'navMenu.logOut',
+                        textDirection: direction,
+                        style: itemStyle.copyWith(color: const Color(0xffc91f1f)),
+                      ),
+                      onTap: () {
+                        navMenuData.logOut();
+                      },
+                    ),
+
+              ],),
           const Divider(),
 
           ///load Parent categories -- level 0

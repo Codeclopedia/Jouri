@@ -2,7 +2,11 @@
   "navMenu": {
     "onSale": "On Sale",
     "login": "Login",
-    "favourite": "Favourites"
+    "favourite": "Favourites",
+    "myAccount":"My account",
+    "orders":"orders",
+    "account":"account",
+    "logOut":"log out"
   },
   "homePage": {
     "collections": "collections",
@@ -32,9 +36,30 @@
     "emptyCart": "Your Cart is empty",
     "shoppingCart": "Shopping Bag",
     "orderSummery": "order summery",
-    "orderSubtotal": "order subtotal"
+    "orderSubtotal": "order subtotal",
+    "proceed": "proceed"
   },
   "favouritePage": {
     "emptyFavourite": "Your favourite list is empty"
+  },
+  "auth": {
+    "signUp": "Sign Up",
+    "login": "Log In",
+    "firstName": "first name",
+    "lastName": "last name",
+    "email": "email",
+    "phone": "phone number",
+    "password": "password",
+    "confirmPassword": "confirm password",
+    "acceptTerms": "By pressing continue you accept our ",
+    "terms": "terms & conditions"
+  },
+  "errors": {
+    "emptyField": "empty field",
+    "invalid": "invalid data"
+  },
+  "config":{
+    "error":"error",
+    "ok":"ok"
   }
 }

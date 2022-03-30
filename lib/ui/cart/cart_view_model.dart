@@ -47,7 +47,6 @@ class CartViewModel extends ChangeNotifier {
     return total;
   }
 
-  ///*********************///
   int cartCount = General.getCartCount();
 
   decrement(Product product, CartItem cartItem) {

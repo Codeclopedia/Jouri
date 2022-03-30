@@ -3,18 +3,40 @@ import 'dart:convert';
 import 'package:Jouri/ui/favourites/favourite_screen.dart';
 import 'package:Jouri/ui/favourites/favourite_view_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-
 import '../../models/category.dart';
+import '../../models/customer.dart';
 import '../../utilities/constants.dart';
+import '../../utilities/general.dart';
 import '../../utilities/http_requests.dart';
+import '../auth/login/login_screen.dart';
+import '../auth/login/login_view_model.dart';
 import '../product_archive/product_archive_screen.dart';
 import '../product_archive/product_archive_view_model.dart';
 
 class NavMenuViewModel extends ChangeNotifier {
+  NavMenuViewModel() {
+    loadUser();
+  }
   List<Category> loadedCategories = [];
+  Customer? customer;
+
+  loadUser() async {
+    var data = await General.getUser();
+    if (data != null) {
+      customer = Customer.fromJson(data);
+      notifyListeners();
+      print('user name is : ${customer!.firstName}');
+    } else {
+      print('user is null');
+    }
+  }
+
+  logOut() {
+    General.clearSP('user');
+    customer = null;
+    notifyListeners();
+  }
 
   Future<List<Category>> loadCategories(context, lang) async {
     List<Category> loadedData = [];
@@ -96,6 +118,14 @@ class NavMenuViewModel extends ChangeNotifier {
         builder: (context) => ChangeNotifierProvider(
               create: (context) => FavouriteViewModel(),
               child: const FavouriteScreen(),
+            )));
+  }
+
+  navigateToLogin(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => LoginViewModel(),
+              child: const LoginScreen(),
             )));
   }
 }

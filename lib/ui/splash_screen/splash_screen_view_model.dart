@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+import '../../utilities/general.dart';
 import '../home/home_page_screen.dart';
 import '../home/home_page_view_model.dart';
 
@@ -13,6 +14,7 @@ class SplashScreenViewModel extends ChangeNotifier {
     _checkDataAndNavigate();
     // _getToken();
   }
+
 
   // void _getToken() async {
   //   var firebaseToken = await FirebaseMessaging.instance.getToken();

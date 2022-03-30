@@ -63,7 +63,6 @@ class MyApp extends StatelessWidget {
                     color: Color(0xfff8f9ff),
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
                     letterSpacing: 3.2,
                   ))
                 : GoogleFonts.raleway(
@@ -71,7 +70,6 @@ class MyApp extends StatelessWidget {
                     color: Color(0xfff8f9ff),
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
                     letterSpacing: 3.2,
                   )),
             primary: const Color(0xffEC297B),
@@ -88,7 +86,6 @@ class MyApp extends StatelessWidget {
                   color: Color(0xffEC297B),
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
                   letterSpacing: 3.2,
                 ))
               : GoogleFonts.raleway(
@@ -96,7 +93,6 @@ class MyApp extends StatelessWidget {
                   color: Color(0xffEC297B),
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
                   letterSpacing: 3.2,
                 )),
         )),

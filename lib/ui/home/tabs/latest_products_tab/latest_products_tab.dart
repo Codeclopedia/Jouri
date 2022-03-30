@@ -23,7 +23,6 @@ class LatestProductsTab extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       fontSize: 21,
       fontWeight: FontWeight.w500,
-      fontStyle: FontStyle.normal,
       letterSpacing: 4.2,
     );
 
