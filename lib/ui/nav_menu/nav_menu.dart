@@ -58,6 +58,20 @@ class NavMenu extends StatelessWidget {
               navMenuData.navigateToArchiveScreenAsOnSale(context);
             },
           ),
+          ListTile(
+            // leading: Icon(
+            //   Icons.favorite_border,
+            //   color: Theme.of(context).colorScheme.secondary,
+            // ),
+            title: LocalizedText(
+              'navMenu.favourite',
+              textDirection: direction,
+              style: itemStyle,
+            ),
+            onTap: () {
+              navMenuData.navigateToFavourite(context);
+            },
+          ),
 
           ///my account
           navMenuData.customer == null
@@ -75,21 +89,20 @@ class NavMenu extends StatelessWidget {
                     navMenuData.navigateToLogin(context);
                   },
                 )
-              : ExpansionTile(title: LocalizedText('navMenu.myAccount',style: itemStyle,),children: [
-                    ListTile(
-                      // leading: Icon(
-                      //   Icons.favorite_border,
-                      //   color: Theme.of(context).colorScheme.secondary,
-                      // ),
-                      title: LocalizedText(
-                        'navMenu.favourite',
-                        textDirection: direction,
-                        style: itemStyle,
-                      ),
-                      onTap: () {
-                        navMenuData.navigateToFavourite(context);
-                      },
-                    ),
+              : ExpansionTile(title: LocalizedText('navMenu.myAccount',style: itemStyle,)
+            ,
+            trailing: const Icon(Icons.add),
+            maintainState: true,
+            childrenPadding:
+            const EdgeInsets.symmetric(horizontal: 30),
+            collapsedIconColor:
+            Theme.of(context).primaryColor,
+            iconColor:
+            Theme.of(context).colorScheme.secondary,
+            textColor:
+            Theme.of(context).colorScheme.secondary,
+            collapsedTextColor:
+            Theme.of(context).primaryColor,children: [
                      ListTile(
                       title: LocalizedText(
                         'navMenu.orders',
