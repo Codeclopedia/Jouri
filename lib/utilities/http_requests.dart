@@ -14,10 +14,10 @@ class HttpRequests {
       required Function(String, Map<String, String>) success,
       required Function error}) async {
     print(url);
-    if (await General.getStringSP('token') != null) {
-      headers[HttpHeaders.authorizationHeader] =
-          'Bearer ${await General.getStringSP('token')}';
-    }
+    // if (await General.getStringSP('token') != null) {
+    //   headers[HttpHeaders.authorizationHeader] =
+    //       'Bearer ${await General.getStringSP('token')}';
+    // }
     // headers['Accept-Language']=await General.getStringSP('lang');
     headers[HttpHeaders.acceptHeader] = 'application/json';
     headers[HttpHeaders.contentTypeHeader] = 'application/json';
@@ -52,9 +52,9 @@ class HttpRequests {
   }) async {
     print('POST Request: ' + url);
     print('POST Body: ${json.encode(body)}');
-    if (await General.getStringSP('token') != null)
-      headers[HttpHeaders.authorizationHeader] =
-          '${await General.getStringSP('token')}';
+    // if (await General.getStringSP('token') != null)
+    //   headers[HttpHeaders.authorizationHeader] =
+    //       '${await General.getStringSP('token')}';
     // headers['Accept-Language']=await General.getStringSP('lang');
     headers[HttpHeaders.contentTypeHeader] =
         'application/x-www-form-urlencoded';
@@ -87,10 +87,10 @@ class HttpRequests {
       required Function(String) success,
       required Function error}) async {
     print(url);
-    if (await General.getStringSP('token') != null) {
-      headers[HttpHeaders.authorizationHeader] =
-          'Bearer ${await General.getStringSP('token')}';
-    }
+    // if (await General.getStringSP('token') != null) {
+    //   headers[HttpHeaders.authorizationHeader] =
+    //       'Bearer ${await General.getStringSP('token')}';
+    // }
     // headers['Accept-Language']=await General.getStringSP('lang');
     headers[HttpHeaders.contentTypeHeader] = 'application/json';
     headers[HttpHeaders.acceptHeader] = 'application/json';

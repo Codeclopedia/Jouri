@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/customer.dart';
 import '../../../utilities/constants.dart';
 import '../../../utilities/http_requests.dart';
 import '../../home/home_page_screen.dart';
@@ -19,7 +20,7 @@ class LoginViewModel extends ChangeNotifier {
 
   var passwordController = TextEditingController();
 
-  get Customer => null;
+  // get Customer => null;
 
   login(context) async {
     if (formKey.currentState!.validate()) {
