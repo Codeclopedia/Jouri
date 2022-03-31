@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class Constants {
   static const String baseUrl = 'https://new.jourikw.com';
-  static const String baseAuthUrl = '$baseUrl/wp-json/jwt-auth/v2/token';
+  static const String baseAuthUrl = '$baseUrl/wp-json/jwt-auth/v1/token';
   static const String _consumerKey =
       'consumer_key=ck_b4c0cc377a3e60cbe2d5b92bbad823e623c7ac91';
   static const String _consumerSecret =
