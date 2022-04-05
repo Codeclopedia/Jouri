@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/model/cart_model.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
@@ -22,7 +21,6 @@ class CartCard extends StatelessWidget {
     var nameStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 12,
-      fontWeight: FontWeight.w400,
       letterSpacing: 2.2,
     );
 

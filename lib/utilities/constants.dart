@@ -23,4 +23,13 @@ class Constants {
   static const String totalPagesKey = 'x-wp-totalpages';
   static const String termsPageUrl =
       'https://new.jourikw.com/index.php/privacy-policy/';
+  static const String orders = '/wp-json/wc/v3/orders';
+  static const String processing = 'processing';
+  static const String completed = 'completed';
+  static const String canceled = 'cancelled';
+  static const String pending = 'pending';
+  static const String refundReq = 'refund-req';
+  static const String onHold = 'on-hold';
+  static const String refunded = 'refunded';
+  static const String failed = 'failed';
 }

@@ -99,13 +99,17 @@ class MyApp extends StatelessWidget {
 
         /// InputFields
         inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none),
-          filled: true,
-          fillColor: Colors.grey.shade50,
-          hintStyle: const TextStyle(color: Colors.black45),
-        ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none),
+            filled: true,
+            fillColor: Colors.grey.shade50,
+            hintStyle: const TextStyle(color: Colors.black45),
+            labelStyle: TextStyle(
+              fontFamily: 'OpenSans',
+              color: Color(0xff97969a),
+              fontSize: 14,
+            )),
 
         /// AppBar
         appBarTheme: const AppBarTheme(

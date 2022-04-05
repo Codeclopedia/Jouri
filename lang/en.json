@@ -3,10 +3,11 @@
     "onSale": "On Sale",
     "login": "Login",
     "favourite": "Favourites",
-    "myAccount":"My account",
-    "orders":"orders",
-    "account":"account",
-    "logOut":"log out"
+    "myAccount": "My account",
+    "orders": "orders",
+    "account": "account",
+    "accountDetails":"account details",
+    "logOut": "log out"
   },
   "homePage": {
     "collections": "collections",
@@ -58,8 +59,17 @@
     "emptyField": "empty field",
     "invalid": "invalid data"
   },
-  "config":{
-    "error":"error",
-    "ok":"ok"
+  "config": {
+    "error": "error",
+    "ok": "ok"
+  },
+  "orders": {
+    "orderId": "order Id",
+    "total": "TOTAL"
+  },
+  "profile":{
+"edit":"edit",
+"cancel":"cancel",
+"saveChanges":"save changes"
   }
 }

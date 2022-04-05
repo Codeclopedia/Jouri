@@ -39,6 +39,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+          fontFamily: 'OpenSans',
+          color: Color(0xff4a4749),
+          fontSize: 14,
+          letterSpacing: 0.8),
       controller: widget.controller,
       onSaved: widget.onSave,
       textInputAction: widget.textInputAction,
@@ -61,7 +66,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             borderSide:
                 BorderSide(color: Theme.of(context).colorScheme.secondary),
           ),
-          // labelText: widget.hint,
+          labelText: widget.hint,
           hintStyle: const TextStyle(color: Colors.grey),
           hintText: widget.hint,
           suffixIcon: widget.isPassword

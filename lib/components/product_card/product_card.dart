@@ -22,15 +22,15 @@ class ProductCard extends StatelessWidget {
     var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
     var itemTitleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 11,
-      fontWeight: FontWeight.w400,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
       letterSpacing: 2.2,
       // height: 10,
     );
     var itemPriceStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontFamily: 'OpenSans',
-      fontSize: 12.5,
+      fontSize: 13,
       fontWeight: FontWeight.w400,
       letterSpacing: 2.8,
     );
@@ -123,6 +123,10 @@ class ProductCard extends StatelessWidget {
                 textAlign:
                     currentLang == 'ar' ? TextAlign.right : TextAlign.left,
               ),
+            ),
+
+            SizedBox(
+              height: 5,
             ),
 
             ///price

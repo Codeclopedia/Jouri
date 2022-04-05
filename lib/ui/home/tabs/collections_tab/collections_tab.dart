@@ -2,6 +2,7 @@ import 'package:Jouri/models/tag.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/loading.dart';
@@ -27,7 +28,7 @@ class CollectionsTab extends StatelessWidget {
                   future: collectionsTabData.loadTags(context, currentLang),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
+                      return snapshot.data!.isNotEmpty? ListView.builder(
                           itemCount: snapshot.data!.length,
                           shrinkWrap: true,
                           physics: const ScrollPhysics(),
@@ -41,7 +42,14 @@ class CollectionsTab extends StatelessWidget {
                                 index: index,
                               ),
                             );
-                          });
+                          }): Container(
+                              height: 400,
+                              child: Lottie.asset(
+                                'assets/lottie/empty_cart.json',
+                                repeat: false,
+                                alignment: Alignment.center,
+                                width: 200,
+                              ));
                     } else {
                       return const Center(
                         child: Loading(),

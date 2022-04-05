@@ -24,7 +24,7 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var homeScreenData = Provider.of<HomePageViewModel>(context);
-    var activeTabStyle = TextStyle(
+    var tabStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       letterSpacing: 2.4,
       fontSize: 25,
@@ -32,6 +32,7 @@ class HomePageScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xfff8f9ff),
         drawer: ChangeNotifierProvider(
             create: (context) => NavMenuViewModel(), child: const NavMenu()),
         drawerScrimColor: Theme.of(context).primaryColor,
@@ -66,8 +67,8 @@ class HomePageScreen extends StatelessWidget {
                       child: LocalizedText(
                         'homePage.newIn',
                         style: homeScreenData.latest
-                            ? activeTabStyle
-                            : activeTabStyle.copyWith(
+                            ? tabStyle
+                            : tabStyle.copyWith(
                                 color: const Color(0xffadafb5),
                               ),
                       ),
@@ -82,8 +83,8 @@ class HomePageScreen extends StatelessWidget {
                       child: LocalizedText(
                         'homePage.collections',
                         style: homeScreenData.collections
-                            ? activeTabStyle
-                            : activeTabStyle.copyWith(
+                            ? tabStyle
+                            : tabStyle.copyWith(
                                 color: const Color(0xffadafb5)),
                       ),
                     ),
@@ -97,8 +98,8 @@ class HomePageScreen extends StatelessWidget {
                       child: LocalizedText(
                         'homePage.fabrics',
                         style: homeScreenData.fabrics
-                            ? activeTabStyle
-                            : activeTabStyle.copyWith(
+                            ? tabStyle
+                            : tabStyle.copyWith(
                                 color: const Color(0xffadafb5)),
                       ),
                     ),
@@ -112,10 +113,10 @@ class HomePageScreen extends StatelessWidget {
                       child: LocalizedText(
                         'homePage.onSale',
                         style: homeScreenData.onSale
-                            ? activeTabStyle.copyWith(
+                            ? tabStyle.copyWith(
                                 color: const Color(0xffc91f1f),
                               )
-                            : activeTabStyle.copyWith(
+                            : tabStyle.copyWith(
                                 color: const Color(0xffadafb5),
                               ),
                       ),

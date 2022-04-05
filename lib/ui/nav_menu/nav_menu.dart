@@ -19,8 +19,8 @@ class NavMenu extends StatelessWidget {
         currentLang == 'ar' ? TextDirection.rtl : TextDirection.ltr;
     TextStyle itemStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontSize: 15,
+      // fontWeight: FontWeight.w500,
       letterSpacing: 2.8,
     );
 
@@ -89,52 +89,52 @@ class NavMenu extends StatelessWidget {
                     navMenuData.navigateToLogin(context);
                   },
                 )
-              : ExpansionTile(title: LocalizedText('navMenu.myAccount',style: itemStyle,)
-            ,
-            trailing: const Icon(Icons.add),
-            maintainState: true,
-            childrenPadding:
-            const EdgeInsets.symmetric(horizontal: 30),
-            collapsedIconColor:
-            Theme.of(context).primaryColor,
-            iconColor:
-            Theme.of(context).colorScheme.secondary,
-            textColor:
-            Theme.of(context).colorScheme.secondary,
-            collapsedTextColor:
-            Theme.of(context).primaryColor,children: [
-                     ListTile(
+              : ExpansionTile(
+                  title: LocalizedText(
+                    'navMenu.myAccount',
+                    style: itemStyle,
+                  ),
+                  trailing: const Icon(Icons.add),
+                  maintainState: true,
+                  childrenPadding: const EdgeInsets.symmetric(horizontal: 30),
+                  collapsedIconColor: Theme.of(context).primaryColor,
+                  iconColor: Theme.of(context).colorScheme.secondary,
+                  textColor: Theme.of(context).colorScheme.secondary,
+                  collapsedTextColor: Theme.of(context).primaryColor,
+                  children: [
+                    ListTile(
                       title: LocalizedText(
                         'navMenu.orders',
                         textDirection: direction,
                         style: itemStyle,
                       ),
                       onTap: () {
-                        // navMenuData.navigateToFavourite(context);
+                        navMenuData.navigateToOrders(context);
                       },
                     ),
-                     ListTile(
+                    ListTile(
                       title: LocalizedText(
                         'navMenu.account',
                         textDirection: direction,
                         style: itemStyle,
                       ),
                       onTap: () {
-                        // navMenuData.navigateToFavourite(context);
+                        navMenuData.navigateToProfile(context);
                       },
                     ),
-                     ListTile(
+                    ListTile(
                       title: LocalizedText(
                         'navMenu.logOut',
                         textDirection: direction,
-                        style: itemStyle.copyWith(color: const Color(0xffc91f1f)),
+                        style:
+                            itemStyle.copyWith(color: const Color(0xffc91f1f)),
                       ),
                       onTap: () {
                         navMenuData.logOut();
                       },
                     ),
-
-              ],),
+                  ],
+                ),
           const Divider(),
 
           ///load Parent categories -- level 0
@@ -196,6 +196,8 @@ class NavMenu extends StatelessWidget {
                                       if (snapshot1.hasData) {
                                         return ListView.builder(
                                             shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
                                             itemCount: snapshot1.data!.length,
                                             itemBuilder:
                                                 (BuildContext context, int i) {
@@ -251,7 +253,7 @@ class NavMenu extends StatelessWidget {
                                                       childrenPadding:
                                                           const EdgeInsets
                                                                   .symmetric(
-                                                              horizontal: 40),
+                                                              horizontal: 30),
                                                       collapsedIconColor:
                                                           Theme.of(context)
                                                               .primaryColor,
@@ -286,6 +288,8 @@ class NavMenu extends StatelessWidget {
                                                                     .builder(
                                                                         shrinkWrap:
                                                                             true,
+                                                                        physics:
+                                                                            NeverScrollableScrollPhysics(),
                                                                         itemCount: snapshot2
                                                                             .data!
                                                                             .length,

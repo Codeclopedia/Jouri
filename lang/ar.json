@@ -6,6 +6,7 @@
     "myAccount": "حسابي",
     "orders": "الطلبات",
     "account": "الحساب",
+    "accountDetails":"معلومات الحساب",
     "logOut": "تسجيل الخروج"
   },
   "homePage": {
@@ -44,7 +45,7 @@
   },
   "auth": {
     "signUp": "إنشاء حساب",
-    "login": "تسجيل دخول",
+    "login": "تسجيل الدخول",
     "firstName": "الاسم الأول",
     "lastName": "الاسم الأخير",
     "email": "البريد الألكتروني",
@@ -61,5 +62,15 @@
   "config": {
     "error": "خطأ",
     "ok": "موافق"
+  },
+  "orders":{
+    "orderId":"رقم الطلب",
+    "total":"المجموع"
+  },
+  "profile": {
+    "edit": "تعديل",
+    "cancel": "إلغاء",
+    "saveChanges": "حفظ التغييرات"
   }
+
 }

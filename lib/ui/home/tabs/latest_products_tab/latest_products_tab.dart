@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/loading.dart';
@@ -21,8 +22,7 @@ class LatestProductsTab extends StatelessWidget {
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 21,
-      fontWeight: FontWeight.w500,
+      fontSize: 19,
       letterSpacing: 4.2,
     );
 
@@ -120,38 +120,48 @@ class LatestProductsTab extends StatelessWidget {
                       latestProductsTabData.loadProducts(context, currentLang),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 9 / 16,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: snapshot.data![index].images!.isNotEmpty
-                                  ? Image.network(
-                                      '${snapshot.data![index].images!.first.src}',
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      'assets/images/hijab_placeholder.jpg',
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            onTap: () {
-                              latestProductsTabData
-                                  .navigateToProductDetailsScreen(
-                                      context, snapshot.data![index]);
-                            },
-                          );
-                        },
-                      );
+                      return snapshot.data!.isNotEmpty
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 9 / 16,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10),
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child:
+                                        snapshot.data![index].images!.isNotEmpty
+                                            ? Image.network(
+                                                '${snapshot.data![index].images!.first.src}',
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                'assets/images/hijab_placeholder.jpg',
+                                                fit: BoxFit.cover,
+                                              ),
+                                  ),
+                                  onTap: () {
+                                    latestProductsTabData
+                                        .navigateToProductDetailsScreen(
+                                            context, snapshot.data![index]);
+                                  },
+                                );
+                              },
+                            )
+                          : Container(
+                              height: 400,
+                              child: Lottie.asset(
+                                'assets/lottie/empty_cart.json',
+                                repeat: false,
+                                alignment: Alignment.center,
+                                width: 200,
+                              ));
                     } else {
                       return GridView.count(
                         shrinkWrap: true,

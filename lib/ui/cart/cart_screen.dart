@@ -1,6 +1,8 @@
 import 'package:Jouri/ui/cart/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/cart_card.dart';
@@ -22,13 +24,13 @@ class CartScreen extends StatelessWidget {
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 21,
-      fontWeight: FontWeight.w500,
+      fontSize: 22,
       letterSpacing: 4.2,
     );
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xfff8f9ff),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -59,36 +61,39 @@ class CartScreen extends StatelessWidget {
                     height: 20,
                   ),
                   General.getCartCount() == 0
-                      ? Container(
-                          height: 500,
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              LocalizedText(
-                                'cartPage.emptyCart',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 3.2,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // Container(
-                              //   height: 100,
-                              //   decoration: const BoxDecoration(
-                              //       image: DecorationImage(
-                              //           image: AssetImage(
-                              //               'assets/images/empty_cart.png',))),
-                              // ),
-                              Image.asset('assets/images/empty_cart.png',
-                                  height: 100,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary)
-                            ],
+                      ?
+                      // Container(
+                      //     height: 500,
+                      //     alignment: Alignment.center,
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         LocalizedText(
+                      //           'cartPage.emptyCart',
+                      //           style: TextStyle(
+                      //             color: Theme.of(context).primaryColor,
+                      //             fontSize: 16,
+                      //             fontWeight: FontWeight.w500,
+                      //             letterSpacing: 3.2,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(
+                      //           height: 20,
+                      //         ),
+                      //         Image.asset('assets/images/empty_cart.png',
+                      //             height: 100,
+                      //             color:
+                      //                 Theme.of(context).colorScheme.secondary)
+                      //       ],
+                      //     ),
+                      //   )
+                      Container(
+                          height: 400,
+                          child: Lottie.asset(
+                            'assets/lottie/empty_cart.json',
+                            repeat: false,
+                            alignment: Alignment.center,
+                            width: 200,
                           ),
                         )
                       : FutureBuilder<List<Product>>(
@@ -126,8 +131,6 @@ class CartScreen extends StatelessWidget {
                                                     product:
                                                         snapshot.data![index],
                                                     cartItem: item!,
-                                                    // recalculatePrice: _changePrice,
-                                                    // removeProductFromCart: _removeCartItem,
                                                   ),
                                                 ],
                                               );

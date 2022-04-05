@@ -2,6 +2,7 @@ import 'package:Jouri/ui/home/tabs/on_sale_tab/on_sale_tab_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/product_card/product_card.dart';
@@ -73,7 +74,7 @@ class OnSaleTab extends StatelessWidget {
                   future: onSaleTabData.loadProducts(context, currentLang),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return GridView.builder(
+                      return snapshot.data!.isNotEmpty? GridView.builder(
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
                         padding: EdgeInsets.zero,
@@ -94,7 +95,14 @@ class OnSaleTab extends StatelessWidget {
                                 childAspectRatio: 9 / 16,
                                 mainAxisSpacing: 20,
                                 crossAxisSpacing: 15),
-                      );
+                      ): Container(
+                              height: 400,
+                              child: Lottie.asset(
+                                'assets/lottie/empty_cart.json',
+                                repeat: false,
+                                alignment: Alignment.center,
+                                width: 200,
+                              ));
                     } else {
                       return GridView.count(
                         crossAxisCount: 2,

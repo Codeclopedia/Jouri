@@ -229,7 +229,7 @@ class MetaDatum {
 
   int? id;
   String? key;
-  String? value;
+  dynamic? value;
 
   factory MetaDatum.fromJson(String str) => MetaDatum.fromMap(json.decode(str));
 
@@ -238,12 +238,41 @@ class MetaDatum {
   factory MetaDatum.fromMap(Map<String, dynamic> json) => MetaDatum(
         id: json["id"] == null ? null : json["id"],
         key: json["key"] == null ? null : json["key"],
-        value: json["value"] == null ? null : json["value"],
+        value: json["value"],
       );
 
   Map<String, dynamic> toMap() => {
         "id": id == null ? null : id,
         "key": key == null ? null : key,
-        "value": value == null ? null : value,
+        "value": value,
+      };
+}
+
+class ValueClass {
+  ValueClass({
+    this.expires,
+    this.products,
+  });
+
+  int? expires;
+  List<dynamic>? products;
+
+  factory ValueClass.fromJson(String str) =>
+      ValueClass.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ValueClass.fromMap(Map<String, dynamic> json) => ValueClass(
+        expires: json["expires"] == null ? null : json["expires"],
+        products: json["products"] == null
+            ? null
+            : List<dynamic>.from(json["products"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "expires": expires == null ? null : expires,
+        "products": products == null
+            ? null
+            : List<dynamic>.from(products!.map((x) => x)),
       };
 }

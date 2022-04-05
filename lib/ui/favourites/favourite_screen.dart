@@ -2,6 +2,7 @@ import 'package:Jouri/ui/favourites/favourite_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../app_bar/app_bar.dart';
 import '../app_bar/app_bar_view_model.dart';
@@ -15,8 +16,7 @@ class FavouriteScreen extends StatelessWidget {
     var favData = Provider.of<FavouriteViewModel>(context);
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 21,
-      fontWeight: FontWeight.w500,
+      fontSize: 22,
       letterSpacing: 4.2,
     );
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
@@ -37,6 +37,7 @@ class FavouriteScreen extends StatelessWidget {
     );
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xfff8f9ff),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -77,31 +78,15 @@ class FavouriteScreen extends StatelessWidget {
 
                     ///grid
                     favData.favProducts.isEmpty
-                        ? Container(
-                            height: 500,
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LocalizedText(
-                                  'favouritePage.emptyFavourite',
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 3.2,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Image.asset('assets/images/empty_wishlist.png',
-                                    height: 100,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary)
-                              ],
-                            ),
-                          )
+                        ?
+                        Container(
+                            height: 400,
+                            child: Lottie.asset(
+                              'assets/lottie/empty_fav.json',
+                              repeat: false,
+                              alignment: Alignment.center,
+                              width: 200,
+                            ))
                         : GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),

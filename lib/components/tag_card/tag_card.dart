@@ -25,11 +25,10 @@ class TagCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var tagCardData = Provider.of<TagCardViewModel>(context);
 
-    var tagStyle = TextStyle(
+    var tagTitleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 28,
-      fontWeight: FontWeight.w300,
-      fontStyle: FontStyle.normal,
+      // fontWeight: FontWeight.w300,
       letterSpacing: 6.2,
     );
 
@@ -37,7 +36,6 @@ class TagCard extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       fontSize: 11,
       fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
       letterSpacing: 2.2,
     );
 
@@ -90,7 +88,7 @@ class TagCard extends StatelessWidget {
                     : null
                 : index.isEven
                     ? null
-                    : 1,
+                    : 20,
             left: currentLang == 'ar'
                 ? index.isEven
                     ? null
@@ -132,8 +130,8 @@ class TagCard extends StatelessWidget {
                 child: Text(
                   tag.name!,
                   style: index.isEven
-                      ? tagStyle.copyWith(color: Colors.white)
-                      : tagStyle,
+                      ? tagTitleStyle.copyWith(color: Colors.white)
+                      : tagTitleStyle,
                   textAlign:
                       currentLang == 'ar' ? TextAlign.right : TextAlign.left,
                 ),

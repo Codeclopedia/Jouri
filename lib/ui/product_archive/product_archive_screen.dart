@@ -1,8 +1,8 @@
 import 'package:Jouri/ui/product_archive/product_archive_view_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/product_card/product_card.dart';
@@ -23,33 +23,30 @@ class ProductArchiveScreen extends StatelessWidget {
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
-      fontSize: 21,
-      fontWeight: FontWeight.w500,
+      fontSize: 22,
       letterSpacing: 4.2,
     );
     var descriptionStyle = TextStyle(
       fontFamily: 'OpenSans',
       color: Theme.of(context).primaryColor,
       fontSize: 14,
-      fontWeight: FontWeight.w300,
     );
 
     var buttonTextStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 14,
-      fontWeight: FontWeight.w500,
       letterSpacing: 2.8,
     );
 
     var breadcrumbsStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 16,
-      fontWeight: FontWeight.w500,
       letterSpacing: 1.4,
     );
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xfff8f9ff),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -203,38 +200,52 @@ class ProductArchiveScreen extends StatelessWidget {
                                 archiveData.loadProducts(context, currentLang),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: GridView.builder(
-                                        shrinkWrap: true,
-                                        physics: const ScrollPhysics(),
-                                        padding: EdgeInsets.zero,
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return ChangeNotifierProvider(
-                                            create: (context) =>
-                                                ProductCardViewModel(
-                                                    product:
-                                                        snapshot.data![index]),
-                                            child: ProductCard(
-                                              gridItem: snapshot.data![index],
-                                              currentLang: currentLang,
+                                return snapshot.data!.isNotEmpty
+                                    ? Row(
+                                        children: [
+                                          Expanded(
+                                            child: GridView.builder(
+                                              shrinkWrap: true,
+                                              physics: const ScrollPhysics(),
+                                              padding: EdgeInsets.zero,
+                                              itemCount: snapshot.data!.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return ChangeNotifierProvider(
+                                                  create: (context) =>
+                                                      ProductCardViewModel(
+                                                          product: snapshot
+                                                              .data![index]),
+                                                  child: ProductCard(
+                                                    gridItem:
+                                                        snapshot.data![index],
+                                                    currentLang: currentLang,
+                                                  ),
+                                                );
+                                              },
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                childAspectRatio: 9 / 16,
+                                                mainAxisSpacing: 20,
+                                                crossAxisSpacing: 15,
+                                              ),
                                             ),
-                                          );
-                                        },
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 9 / 16,
-                                          mainAxisSpacing: 20,
-                                          crossAxisSpacing: 15,
+                                          ),
+                                        ],
+                                      )
+                                    : Container(
+                                        height: 400,
+                                        child: Center(
+                                          child: Lottie.asset(
+                                            'assets/lottie/no_products.json',
+                                            repeat: false,
+                                            alignment: Alignment.center,
+                                            width: 200,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                );
+                                      );
                               } else {
                                 return GridView.count(
                                   crossAxisCount: 2,
@@ -252,28 +263,42 @@ class ProductArchiveScreen extends StatelessWidget {
                                 );
                               }
                             })
-                        : GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: archiveData.loadedProducts.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ChangeNotifierProvider(
-                                create: (context) => ProductCardViewModel(
-                                    product: archiveData.loadedProducts[index]),
-                                child: ProductCard(
-                                  gridItem: archiveData.loadedProducts[index],
-                                  currentLang: currentLang,
+                        : archiveData.loadedProducts.isNotEmpty
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemCount: archiveData.loadedProducts.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ChangeNotifierProvider(
+                                    create: (context) => ProductCardViewModel(
+                                        product:
+                                            archiveData.loadedProducts[index]),
+                                    child: ProductCard(
+                                      gridItem:
+                                          archiveData.loadedProducts[index],
+                                      currentLang: currentLang,
+                                    ),
+                                  );
+                                },
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 9 / 16,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15),
+                              )
+                            : Container(
+                                height: 400,
+                                child: Center(
+                                  child: Lottie.asset(
+                                    'assets/lottie/no_products.json',
+                                    repeat: false,
+                                    alignment: Alignment.center,
+                                    width: 200,
+                                  ),
                                 ),
-                              );
-                            },
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 9 / 16,
-                                    mainAxisSpacing: 20,
-                                    crossAxisSpacing: 15),
-                          ),
+                              ),
                     const SizedBox(
                       height: 30,
                     ),

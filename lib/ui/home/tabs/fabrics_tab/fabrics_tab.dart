@@ -2,8 +2,10 @@ import 'package:Jouri/ui/home/tabs/fabrics_tab/fabrics_tab_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../components/attribute_card.dart';
 import '../../../../components/product_loading.dart';
 import '../../../../models/attribute_term.dart';
 
@@ -14,13 +16,7 @@ class FabricsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     var fabricsTabData = Provider.of<FabricsTabViewModel>(context);
     var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var tagStyle = const TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
-      letterSpacing: 3.2,
-    );
+  
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -32,7 +28,7 @@ class FabricsTab extends StatelessWidget {
                       fabricsTabData.loadAttributeTerms(context, currentLang),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
+                      return snapshot.data!.isNotEmpty? ListView.builder(
                           shrinkWrap: true,
                           physics: const ScrollPhysics(),
                           padding: EdgeInsets.zero,
@@ -46,48 +42,16 @@ class FabricsTab extends StatelessWidget {
                                     snapshot.data![index].name,
                                     snapshot.data![index].description);
                               },
-                              child: Card(
-                                elevation: 3,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Container(
-                                  height: 240,
-
-                                  ///image
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: snapshot
-                                                    .data![index].description !=
-                                                ''
-                                            ? NetworkImage(
-                                                '${snapshot.data![index].description}')
-                                            : const AssetImage(
-                                                    'assets/images/hijab_placeholder.jpg')
-                                                as ImageProvider,
-                                        fit: BoxFit.cover),
-                                  ),
-
-                                  ///title
-                                  child: Center(
-                                    child: Container(
-                                      width: 200,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Center(
-                                        child: Text(
-                                          snapshot.data![index].name!,
-                                          style: tagStyle,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              child: AttributeCard(attribute: snapshot.data![index]),
                             );
-                          });
+                          }): Container(
+                              height: 400,
+                              child: Lottie.asset(
+                                'assets/lottie/empty_cart.json',
+                                repeat: false,
+                                alignment: Alignment.center,
+                                width: 200,
+                              ));
                     } else {
                       return ListView(
                         shrinkWrap: true,
@@ -118,46 +82,9 @@ class FabricsTab extends StatelessWidget {
                             fabricsTabData
                                 .loadedAttributeTerms[index].description);
                       },
-                      child: Card(
-                        elevation: 3,
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Container(
-                          height: 240,
+                                                    child: AttributeCard(attribute: fabricsTabData.loadedAttributeTerms[index]
+                                                    ),
 
-                          ///image
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: fabricsTabData
-                                            .loadedAttributeTerms[index]
-                                            .description !=
-                                        ''
-                                    ? NetworkImage(
-                                        '${fabricsTabData.loadedAttributeTerms[index].description}')
-                                    : const AssetImage(
-                                            'assets/images/hijab_placeholder.jpg')
-                                        as ImageProvider,
-                                fit: BoxFit.cover),
-                          ),
-
-                          ///title
-                          child: Center(
-                            child: Container(
-                              width: 200,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                child: Text(
-                                  fabricsTabData
-                                      .loadedAttributeTerms[index].name!,
-                                  style: tagStyle,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     );
                   }),
         ],
@@ -165,3 +92,5 @@ class FabricsTab extends StatelessWidget {
     );
   }
 }
+
+

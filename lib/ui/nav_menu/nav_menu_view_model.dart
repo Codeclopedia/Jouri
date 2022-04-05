@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Jouri/ui/account/profile/profile_view_model.dart';
 import 'package:Jouri/ui/favourites/favourite_screen.dart';
 import 'package:Jouri/ui/favourites/favourite_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,9 @@ import '../../models/customer.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/general.dart';
 import '../../utilities/http_requests.dart';
+import '../account/orders/orders_screen.dart';
+import '../account/orders/orders_view_model.dart';
+import '../account/profile/profile_screen.dart';
 import '../auth/login/login_screen.dart';
 import '../auth/login/login_view_model.dart';
 import '../product_archive/product_archive_screen.dart';
@@ -126,6 +130,22 @@ class NavMenuViewModel extends ChangeNotifier {
         builder: (context) => ChangeNotifierProvider(
               create: (context) => LoginViewModel(),
               child: const LoginScreen(),
+            )));
+  }
+
+  navigateToOrders(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => OrdersViewModel(customer: customer),
+              child: const OrdersScreen(),
+            )));
+  }
+
+  navigateToProfile(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+              create: (context) => ProfileViewModel(),
+              child: const ProfileScreen(),
             )));
   }
 }
