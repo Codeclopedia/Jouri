@@ -31,7 +31,9 @@
   },
   "productDetailsPage": {
     "addToCart": "إضافة إلى السلة",
-    "relatedProducts": "منتجات قد تعجبك"
+    "relatedProducts": "منتجات قد تعجبك",
+    "haveToLogin":"يجب تسجيل الدخول للإضافة إلى المفضلة",
+    "outOfStock":"هذا المنتج غير متوفر"
   },
   "cartPage": {
     "emptyCart": "عربة التسوق فارغة",

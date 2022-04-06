@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:Jouri/ui/account/profile/profile_view_model.dart';
-import 'package:Jouri/ui/favourites/favourite_screen.dart';
-import 'package:Jouri/ui/favourites/favourite_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../models/category.dart';
@@ -10,6 +8,8 @@ import '../../models/customer.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/general.dart';
 import '../../utilities/http_requests.dart';
+import '../account/favourites/favourite_screen.dart';
+import '../account/favourites/favourite_view_model.dart';
 import '../account/orders/orders_screen.dart';
 import '../account/orders/orders_view_model.dart';
 import '../account/profile/profile_screen.dart';

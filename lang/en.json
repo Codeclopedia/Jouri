@@ -31,7 +31,9 @@
   },
   "productDetailsPage": {
     "addToCart": "add to cart",
-    "relatedProducts": "you may also like"
+    "relatedProducts": "you may also like",
+    "haveToLogin": "You must login to add a product to Favorites",
+    "outOfStock":"This item is out of stock"
   },
   "cartPage": {
     "emptyCart": "Your Cart is empty",

@@ -1,11 +1,10 @@
 import 'package:Jouri/models/product.dart';
 import 'package:Jouri/utilities/general.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../product_details_screen/product_details_screen.dart';
-import '../product_details_screen/product_details_view_model.dart';
+import '../../product_details_screen/product_details_screen.dart';
+import '../../product_details_screen/product_details_view_model.dart';
 
 class FavouriteViewModel extends ChangeNotifier {
   List<Product> favProducts = General.getFav().toList();

@@ -1,12 +1,14 @@
-import 'package:Jouri/ui/favourites/favourite_view_model.dart';
+import 'package:Jouri/ui/account/favourites/favourite_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import '../app_bar/app_bar.dart';
-import '../app_bar/app_bar_view_model.dart';
-import '../cart/cart_view_model.dart';
+
+import '../../app_bar/app_bar.dart';
+import '../../app_bar/app_bar_view_model.dart';
+import '../../cart/cart_view_model.dart';
+
 
 class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({Key? key}) : super(key: key);

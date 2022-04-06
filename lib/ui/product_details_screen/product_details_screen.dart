@@ -1,7 +1,5 @@
 import 'package:Jouri/ui/app_bar/app_bar.dart';
 import 'package:Jouri/ui/product_details_screen/product_details_view_model.dart';
-import 'package:badges/badges.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -90,7 +88,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                                       .selectedVariation !=
                                                   null
 
-                                              ///selected variation is not null
+                                              ///selected variation is not null --> view image / placeholder
                                               ? productDetailsData
                                                           .selectedVariation!
                                                           .image !=
@@ -152,7 +150,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                                 ),
                                                 onPressed: () {
                                                   if (!viewModel.isFav) {
-                                                    viewModel.addToFav();
+                                                    viewModel.addToFav(context);
                                                   } else {
                                                     viewModel.removeFromFav();
                                                   }
@@ -238,6 +236,8 @@ class ProductDetailsScreen extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+
+                                                  ///cart controller
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -461,7 +461,11 @@ class ProductDetailsScreen extends StatelessWidget {
                                                     .primaryColor,
                                           ),
                                           onPressed: () {
-                                            viewModel.addToFav();
+                                            if (!viewModel.isFav) {
+                                              viewModel.addToFav(context);
+                                            } else {
+                                              viewModel.removeFromFav();
+                                            }
                                           },
                                         );
                                       }),
@@ -477,105 +481,105 @@ class ProductDetailsScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 20,
                                       ),
-
                                       ///price & cart controller
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            padding:
-                                                const EdgeInsets.only(top: 6.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  top: 6.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                   Text(
+                                                          productDetailsData.product
+                                                                  .regularPrice! +
+                                                              currency,
+                                                          style: priceStyle),
+                                                  const SizedBox(
+                                                    width: 15,
+                                                  ),
                                                   productDetailsData.product
-                                                          .regularPrice! +
-                                                      currency,
-                                                  style: productDetailsData
-                                                                  .product
-                                                                  .onSale !=
-                                                              null &&
+                                                              .onSale ==
+                                                          true
+                                                      ? Text(
                                                           productDetailsData
                                                                   .product
-                                                                  .onSale ==
-                                                              true
-                                                      ? priceStyle.copyWith(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough)
-                                                      : priceStyle,
-                                                ),
-                                                const SizedBox(
-                                                  width: 15,
-                                                ),
-                                                productDetailsData
-                                                            .product.onSale ==
-                                                        true
-                                                    ? Text(
-                                                        productDetailsData
-                                                                .product
-                                                                .salePrice! +
-                                                            currency,
-                                                        style: priceStyle.copyWith(
-                                                            color: const Color(
-                                                                0xffc91f1f)),
-                                                      )
-                                                    : Container()
-                                              ],
+                                                                  .salePrice! +
+                                                              currency,
+                                                          style: priceStyle.copyWith(
+                                                              color: const Color(
+                                                                  0xffc91f1f)),
+                                                        )
+                                                      : Container()
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    productDetailsData
-                                                        .decrement();
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.remove,
-                                                    color: Colors.white,
-                                                    size: 18,
-                                                  ),
-                                                  style: TextButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color(0xffe5e5eb),
-                                                    shape: const CircleBorder(),
-                                                  )),
-                                              Text('1'),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    productDetailsData
-                                                        .increment();
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                    size: 18,
-                                                  ),
-                                                  style: TextButton.styleFrom(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    shape: const CircleBorder(),
-                                                  )),
-                                            ],
-                                          )
-                                        ],
+
+                                            ///cart controller
+                                          Consumer<ProductDetailsViewModel>(
+                                          builder: (context, viewModel, _) {
+                                        return 
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      productDetailsData
+                                                          .decrement();
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.remove,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xffe5e5eb),
+                                                      shape:
+                                                          const CircleBorder(),
+                                                    )),
+                                                Text(
+                                                  '${productDetailsData.quantity}',
+                                                  style: titleStyle.copyWith(
+                                                      fontSize: 14),
+                                                ),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      productDetailsData
+                                                          .increment();
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.add,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .primaryColor,
+                                                      shape:
+                                                          const CircleBorder(),
+                                                    )),
+                                              ],
+                                            );
+                                      
+                                      }),
+                                     ],
                                       ),
                                       const SizedBox(
                                         height: 20,
                                       ),
+                             
+                                      
                                     ],
-                                  ),
-                                )
-                              ],
-                            ),
-
+                                    ),
+                                ),
+                              ]),
                       ///add to cart
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -670,9 +674,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               ],
                             );
                           }),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      
                       const SizedBox(
                         height: 30,
                       ),

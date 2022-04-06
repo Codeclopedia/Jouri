@@ -58,20 +58,6 @@ class NavMenu extends StatelessWidget {
               navMenuData.navigateToArchiveScreenAsOnSale(context);
             },
           ),
-          ListTile(
-            // leading: Icon(
-            //   Icons.favorite_border,
-            //   color: Theme.of(context).colorScheme.secondary,
-            // ),
-            title: LocalizedText(
-              'navMenu.favourite',
-              textDirection: direction,
-              style: itemStyle,
-            ),
-            onTap: () {
-              navMenuData.navigateToFavourite(context);
-            },
-          ),
 
           ///my account
           navMenuData.customer == null
@@ -102,6 +88,20 @@ class NavMenu extends StatelessWidget {
                   textColor: Theme.of(context).colorScheme.secondary,
                   collapsedTextColor: Theme.of(context).primaryColor,
                   children: [
+                    ListTile(
+                      // leading: Icon(
+                      //   Icons.favorite_border,
+                      //   color: Theme.of(context).colorScheme.secondary,
+                      // ),
+                      title: LocalizedText(
+                        'navMenu.favourite',
+                        textDirection: direction,
+                        style: itemStyle,
+                      ),
+                      onTap: () {
+                        navMenuData.navigateToFavourite(context);
+                      },
+                    ),
                     ListTile(
                       title: LocalizedText(
                         'navMenu.orders',

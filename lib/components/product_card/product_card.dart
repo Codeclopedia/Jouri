@@ -96,7 +96,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           onPressed: () {
                             if (!viewModel.isFav) {
-                              viewModel.addToFav();
+                              viewModel.addToFav(context);
                             } else {
                               viewModel.removeFromFav();
                             }

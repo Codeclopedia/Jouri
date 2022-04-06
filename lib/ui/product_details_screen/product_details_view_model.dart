@@ -1,12 +1,17 @@
 import 'dart:convert';
 
+import 'package:Jouri/ui/auth/login/login_screen.dart';
+import 'package:Jouri/ui/auth/login/login_view_model.dart';
 import 'package:Jouri/ui/cart/cart_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/attribute_term.dart';
+import '../../models/customer.dart';
 import '../../models/product.dart';
 import '../../models/product_variation.dart';
 import '../../utilities/constants.dart';
@@ -19,9 +24,10 @@ class ProductDetailsViewModel extends ChangeNotifier {
   final bool isVariable;
 
   ProductDetailsViewModel({required this.product, required this.isVariable}) {
-    checkIfIsFav();
+    loadUser();
   }
 
+  Customer? customer;
   List<ProductVariation> loadedVariations = [];
   ProductVariation? selectedVariation;
   int cartCount = 0, quantity = 1;
@@ -33,6 +39,17 @@ class ProductDetailsViewModel extends ChangeNotifier {
   List<Product> loadedRelatedProducts = [];
   List<AttributeTerm> loadedColorAttributeTerms = [];
   List<AttributeTerm> usedColorAttributeTerms = [];
+
+  loadUser() async {
+    var data = await General.getUser();
+    if (data != null) {
+      customer = Customer.fromJson(data);
+      print('user name is : ${customer!.firstName}');
+      checkIfIsFav();
+    } else {
+      print('user is null');
+    }
+  }
 
   Future<List<ProductVariation>> loadVariations(context, lang) async {
     var url = Constants.baseUrl +
@@ -63,14 +80,35 @@ class ProductDetailsViewModel extends ChangeNotifier {
     return loadedVariations;
   }
 
-  addToFav() {
-    isFav = !isFav;
-    General.addToFav(product);
-    notifyListeners();
+  addToFav(context) {
+    if (customer != null) {
+      isFav = !isFav;
+      General.addToFav(product);
+      HapticFeedback.vibrate();
+      notifyListeners();
+    } else {
+      final scaffold = Scaffold.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          content: const LocalizedText('productDetailsPage.haveToLogin'),
+          action: SnackBarAction(
+            label: General.getTranslatedText(context, 'auth.login'),
+            onPressed: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => ChangeNotifierProvider(
+                        create: (context) => LoginViewModel(),
+                        child: LoginScreen(),
+                      )));
+            },
+          ),
+        ),
+      );
+    }
   }
 
   removeFromFav() {
     isFav = !isFav;
+    HapticFeedback.vibrate();
     General.removeFromFav(product);
     notifyListeners();
   }
