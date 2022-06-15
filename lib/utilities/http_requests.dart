@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,10 +31,10 @@ class HttpRequests {
     } else {
       General.dismissProgress();
       print(response.body);
-      if (!kDebugMode) {
-        var crash = FirebaseCrashlytics.instance;
-        crash.setCustomKey('getError', response.body);
-      }
+      // if (!kDebugMode) {
+      //   var crash = FirebaseCrashlytics.instance;
+      //   crash.setCustomKey('getError', response.body);
+      // }
       print(response.body);
       var data = json.decode(response.body);
       General.showErrorDialog(context, data['message']);
@@ -69,10 +69,10 @@ class HttpRequests {
     } else {
       General.dismissProgress();
       print(response.body);
-      if (!kDebugMode) {
-        var crash = FirebaseCrashlytics.instance;
-        crash.setCustomKey('addError', response.body);
-      }
+      // if (!kDebugMode) {
+      //   var crash = FirebaseCrashlytics.instance;
+      //   crash.setCustomKey('addError', response.body);
+      // }
       var data = json.decode(response.body);
       error();
       General.showErrorDialog(context, data['message']);
@@ -104,10 +104,10 @@ class HttpRequests {
       General.dismissProgress();
       print(response.statusCode);
       print(response.body);
-      if (!kDebugMode) {
-        var crash = FirebaseCrashlytics.instance;
-        crash.setCustomKey('updateError', response.body);
-      }
+      // if (!kDebugMode) {
+      //   var crash = FirebaseCrashlytics.instance;
+      //   crash.setCustomKey('updateError', response.body);
+      // }
       var data = json.decode(response.body);
       General.showErrorDialog(context, data['message']);
       error();

@@ -117,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: OutlineButton(
+                                child: TextButton(
                                   child: LocalizedText(
                                     'auth.signUp',
                                     style: currentLang == 'ar'
@@ -141,11 +141,18 @@ class LoginScreen extends StatelessWidget {
                                   onPressed: () {
                                     loginData.navigateToSignUp(context);
                                   },
-                                  borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
+                                  style: ButtonStyle(
+                                    side: MaterialStateProperty.all(
+                                      BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
                                   ),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
                                 ),
                               ),
                             ],
