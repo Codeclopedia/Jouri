@@ -1,5 +1,5 @@
 import 'package:Jouri/ui/app_bar/app_bar_view_model.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,12 +35,13 @@ class AppBarSection extends StatelessWidget {
                         onPressed: () {
                           appBarData.navigateToCart(context);
                         },
-                        icon: Badge(
+                        icon: badge.Badge(
+                            showBadge: Provider.of<AppBarViewModel>(context)
+                                .newCartItemIcon,
                             badgeColor: Theme.of(context).colorScheme.secondary,
                             badgeContent: Text(
-                              '${viewModel.cartCount}',
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 8),
+                              '',
+                              style: const TextStyle(color: Colors.white),
                             ),
                             child: Icon(
                               CupertinoIcons.bag,

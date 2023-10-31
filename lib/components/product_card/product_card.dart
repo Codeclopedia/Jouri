@@ -1,4 +1,7 @@
 import 'package:Jouri/components/product_card/product_card_view_model.dart';
+import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
+import 'package:Jouri/utilities/general.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -19,7 +22,8 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var productCard = Provider.of<ProductCardViewModel>(context, listen: false);
-    var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
+
+    var currency = General.getCurrency(context);
     var itemTitleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 14,
@@ -41,7 +45,6 @@ class ProductCard extends StatelessWidget {
       },
       child: Container(
         width: 155,
-        height: 228,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5), topRight: Radius.circular(5))),
@@ -54,20 +57,27 @@ class ProductCard extends StatelessWidget {
                 gridItem.images!.isNotEmpty
                     ? ImageSlideshow(
                         // width: 155,
-                        height: 230,
+                        // height: 230,
                         initialPage: 0,
                         indicatorColor: Theme.of(context).primaryColor,
                         indicatorBackgroundColor: Colors.grey,
                         autoPlayInterval: 0,
+                        isLoop: true,
                         children: gridItem.images!
                             .map((e) => ClipRRect(
                                   borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(5),
                                       topRight: Radius.circular(5)),
-                                  child: Image.network(
-                                    e.src!,
+                                  child: CachedNetworkImage(
+                                    imageUrl: e.src!,
                                     fit: BoxFit.cover,
-                                  ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ) /* Image.network(
+                                      e.src!,
+                                      fit: BoxFit.cover,
+                                    ) */
+                                  ,
                                 ))
                             .toList())
                     : Image.asset(
@@ -114,15 +124,12 @@ class ProductCard extends StatelessWidget {
             ),
 
             ///title
-            Flexible(
-              child: Text(
-                gridItem.name!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: itemTitleStyle,
-                textAlign:
-                    currentLang == 'ar' ? TextAlign.right : TextAlign.left,
-              ),
+            Text(
+              gridItem.name! + '\n',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: itemTitleStyle,
+              textAlign: currentLang == 'ar' ? TextAlign.right : TextAlign.left,
             ),
 
             SizedBox(
@@ -130,31 +137,29 @@ class ProductCard extends StatelessWidget {
             ),
 
             ///price
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 6.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      gridItem.regularPrice! + currency,
-                      style: gridItem.onSale != null && gridItem.onSale == true
-                          ? itemPriceStyle.copyWith(
-                              decoration: TextDecoration.lineThrough)
-                          : itemPriceStyle,
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    gridItem.onSale == true
-                        ? Text(
-                            gridItem.salePrice! + currency,
-                            style: itemPriceStyle.copyWith(
-                                color: const Color(0xffc91f1f)),
-                          )
-                        : Container()
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.only(top: 6.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    gridItem.onSale ?? false
+                        ? "${General().selectedCurrencyPrice(price: gridItem.regularPrice, rate: currency.rate!).toStringAsFixed(2)} ${currency.symbol}"
+                        : "${General().selectedCurrencyPrice(price: gridItem.price, rate: currency.rate!).toStringAsFixed(2)} ${currency.symbol}",
+                    style: gridItem.onSale != null && gridItem.onSale == true
+                        ? itemPriceStyle.copyWith(
+                            decoration: TextDecoration.lineThrough)
+                        : itemPriceStyle,
+                  ),
+                  gridItem.onSale == true
+                      ? Text(
+                          "${General().selectedCurrencyPrice(price: gridItem.salePrice, rate: currency.rate!).toStringAsFixed(2)} ${currency.symbol}",
+                          style: itemPriceStyle.copyWith(
+                              color: const Color(0xffc91f1f)),
+                        )
+                      : Container()
+                ],
               ),
             ),
           ],

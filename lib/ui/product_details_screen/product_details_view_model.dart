@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:Jouri/ui/app_bar/app_bar_view_model.dart';
 import 'package:Jouri/ui/auth/login/login_screen.dart';
 import 'package:Jouri/ui/auth/login/login_view_model.dart';
 import 'package:Jouri/ui/cart/cart_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +53,7 @@ class ProductDetailsViewModel extends ChangeNotifier {
   }
 
   Future<List<ProductVariation>> loadVariations(context, lang) async {
+    print("the product id of the product is ${product.id}");
     var url = Constants.baseUrl +
         Constants.products +
         '/${product.id}' +
@@ -63,6 +65,8 @@ class ProductDetailsViewModel extends ChangeNotifier {
         url: url,
         headers: {},
         success: (value, map) {
+          loadedVariations.clear();
+
           List list = json.decode(value);
           list.forEach((element) {
             loadedVariations.add(ProductVariation.fromMap(element));
@@ -70,13 +74,13 @@ class ProductDetailsViewModel extends ChangeNotifier {
           if (loadedVariations.isNotEmpty) {
             selectedVariation = loadedVariations.first;
             print('initial variation is: ' + selectedVariation!.id.toString());
-            notifyListeners();
+            // notifyListeners();
           } else {
             print('no variations to this product');
           }
         },
         error: () {});
-
+    print("length of loaded variations is ${loadedVariations.length}");
     return loadedVariations;
   }
 
@@ -87,7 +91,7 @@ class ProductDetailsViewModel extends ChangeNotifier {
       HapticFeedback.vibrate();
       notifyListeners();
     } else {
-      final scaffold = Scaffold.of(context);
+      final scaffold = ScaffoldMessenger.of(context);
       scaffold.showSnackBar(
         SnackBar(
           content: const LocalizedText('productDetailsPage.haveToLogin'),
@@ -133,19 +137,23 @@ class ProductDetailsViewModel extends ChangeNotifier {
         Constants.wooAuth +
         '&lang=$lang';
     List<AttributeTerm> loadedData = [];
+
     await HttpRequests.httpGetRequest(
         context: context,
         url: url,
         headers: {},
         success: (value, _) {
           List list = json.decode(value);
+          print("list of attribute terms is ${list.length}");
           list.forEach((element) {
             loadedData.add(AttributeTerm.fromMap(element));
           });
           loadedColorAttributeTerms = loadedData;
           storeUsedAttribute();
         },
-        error: () {});
+        error: (e) {
+          log(e.toString());
+        });
 
     return loadedData;
   }
@@ -160,8 +168,8 @@ class ProductDetailsViewModel extends ChangeNotifier {
 
   /// 2. b) find color attribute index in the variation attribute list
   getColorAttributeIndexInVariation() {
-    colorAttributeIndexInVariation = selectedVariation!.attributes!
-        .indexWhere((element) => element.id == Constants.colorAttributeId);
+    colorAttributeIndexInVariation = selectedVariation?.attributes
+        ?.indexWhere((element) => element.id == Constants.colorAttributeId);
     print('color attribute index in variation: ' +
         colorAttributeIndexInProduct.toString());
   }
@@ -172,16 +180,16 @@ class ProductDetailsViewModel extends ChangeNotifier {
     getColorAttributeIndexInVariation();
     if (usedColorAttributeTerms.isEmpty) {
       loadedColorAttributeTerms
-          .map((e) => product.attributes![colorAttributeIndexInProduct].options!
-                  .map((y) {
+          .map((e) => product.attributes?[colorAttributeIndexInProduct].options
+                  ?.map((y) {
                 /// e is attribute term,y is product color option
                 if (e.name == y) usedColorAttributeTerms.add(e);
               }).toList())
           .toList();
       selectedColorIndex = usedColorAttributeTerms.indexWhere((element) =>
           element.name ==
-          selectedVariation!
-              .attributes![colorAttributeIndexInVariation].option);
+          selectedVariation
+              ?.attributes?[colorAttributeIndexInVariation].option);
       print("number of colors used in product: " +
           usedColorAttributeTerms.length.toString());
     }
@@ -189,19 +197,34 @@ class ProductDetailsViewModel extends ChangeNotifier {
 
   /// 4. iterate on used attribute terms to get terms equal variation color attribute option --> when change variation
   changeVariation(AttributeTerm colorTerm, y) {
-    selectedVariation = loadedVariations.firstWhere((element) =>
-        element.attributes![colorAttributeIndexInVariation].option ==
-        colorTerm.name);
+    selectedVariation = loadedVariations[y];
+    /*  if(loadedVariations.isNotEmpty){
+      for (var i = 0; i < loadedVariations.length; i++) {
+        if(loadedVariations[i].attributes!.isNotEmpty)
+        if(loadedVariations[i].attributes![colorAttributeIndexInVariation].option==colorTerm.name){
+selectedVariation=loadedVariations[i];
+        }
+      }/* 
+selectedVariation = loadedVariations.firstWhere((element) {
+      if(element.attributes!.isNotEmpty)
+       return element.attributes![colorAttributeIndexInVariation].option ==
+        colorTerm.name;
+        return false;
+        },orElse: () => selectedVariation!,); */
+    } */
+
     selectedColorIndex = y;
-    print('new selected variation: ' +
+    /*  print('new selected variation: ' +
         selectedVariation!.id.toString() +
         ' - ' +
         selectedVariation!.attributes![colorAttributeIndexInVariation].option!);
+     */
     notifyListeners();
   }
 
   /// 5. receive hex code and convert to int
   hexToColor(AttributeTerm hex) {
+    print('color is :$hex');
     if (hex.description != "") {
       var hexColor = hex.description;
       hexColor = hexColor!.toUpperCase().replaceAll("#", "");
@@ -243,14 +266,27 @@ class ProductDetailsViewModel extends ChangeNotifier {
   }
 
   addToCart(context) {
-    General.addToCart(
-        productId: product.id,
-        unitPrice: selectedVariation != null && isVariable
-            ? double.parse(selectedVariation!.price!)
-            : double.parse(product.price!),
-        quantity: quantity,
-        variation:
-            selectedVariation != null && isVariable ? selectedVariation : null);
+    try {
+      General.addToCart(
+          productId: product.id,
+          unitPrice: selectedVariation != null && isVariable
+              ? double.parse(selectedVariation!.price!)
+              : double.parse(product.price!),
+          quantity: quantity,
+          variation: selectedVariation != null && isVariable
+              ? selectedVariation
+              : null);
+    } catch (e) {
+      print("add to cart error $e");
+    }
+
+    Provider(
+      create: (pcontext) {
+        Provider.of<AppBarViewModel>(pcontext, listen: false)
+            .showNewCartItemIcon(true);
+      },
+    );
+
     HapticFeedback.vibrate();
     recalculateCartCount();
   }
@@ -288,7 +324,7 @@ class ProductDetailsViewModel extends ChangeNotifier {
         return SnackBar(content: Text('not available more than $quantity'));
       }
     } else {
-      if (quantity + 1 <= product.stockQuantity!.toInt()) {
+      if (quantity + 1 <= int.parse(product.stockQuantity!)) {
         quantity++;
         print('current quantity: $quantity');
         HapticFeedback.vibrate();
@@ -299,13 +335,5 @@ class ProductDetailsViewModel extends ChangeNotifier {
     }
 
     // recalculateCartCount();
-  }
-
-  navigateToCart(context) {
-    Navigator.of(context).push(CupertinoPageRoute(
-        builder: (context) => ChangeNotifierProvider(
-              create: (context) => CartViewModel(),
-              child: const CartScreen(),
-            )));
   }
 }

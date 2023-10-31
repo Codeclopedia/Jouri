@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cart/model/cart_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
-import '../../models/product_variation.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/general.dart';
 import '../../utilities/http_requests.dart';
@@ -15,7 +16,6 @@ class CartViewModel extends ChangeNotifier {
   final GlobalKey<AnimatedListState> listKey = GlobalKey();
 
   Future<List<Product>> loadCart(context) async {
-    if (cartProducts.isNotEmpty) return cartProducts;
     List<int> cartIds = General.getCartIds();
 
     var productIdsString = cartIds.map((e) => e).toString();
@@ -32,24 +32,27 @@ class CartViewModel extends ChangeNotifier {
         url: url,
         headers: {},
         success: (value, _) {
-          List list = json.decode(value);
+          cartProducts = [];
+          final List list = json.decode(value);
           list.forEach((element) {
             cartProducts.add(Product.fromMap(element));
           });
         },
         error: () {});
     print('cart products count: ${cartProducts.length}');
+
     return cartProducts;
   }
 
-  String calculatePrice() {
-    var total = General.getCartPrice().toString();
-    return total;
+  String calculatePrice(context) {
+    var total = General.getCartPrice(context).toString();
+
+    return (double.parse(total)).toStringAsFixed(2).toString();
   }
 
   int cartCount = General.getCartCount();
 
-  decrement(Product product, CartItem cartItem) {
+  decrement(Product product, CartItem cartItem, BuildContext context) {
     if (cartItem.quantity > 1) {
       General.decrementCartItem(
         productId: product.id,
@@ -60,15 +63,16 @@ class CartViewModel extends ChangeNotifier {
       // notifyListeners();
     } else {
       General.removeCartItem(productId: product.id);
+      cartProducts.removeWhere((element) => element.id == product.id);
       print('${product.id} deleted');
       HapticFeedback.vibrate();
       // notifyListeners();
     }
-    calculatePrice();
+    calculatePrice(context);
     recalculateCartCount();
   }
 
-  increment(Product product, CartItem cartItem) {
+  increment(Product product, CartItem cartItem, BuildContext context) {
     if (product.type == 'variable' && cartItem.productDetails != null) {
       if (cartItem.quantity + 1 <=
           cartItem.productDetails.stockQuantity!.toInt()) {
@@ -85,7 +89,7 @@ class CartViewModel extends ChangeNotifier {
                 'not available more than ${cartItem.productDetails.stockQuantity}'));
       }
     } else {
-      if (cartItem.quantity + 1 <= product.stockQuantity!.toInt()) {
+      if (cartItem.quantity + 1 <= int.parse(product.stockQuantity!)) {
         General.incrementCartItem(
           productId: product.id,
         );
@@ -97,7 +101,7 @@ class CartViewModel extends ChangeNotifier {
             content: Text('not available more than ${product.stockQuantity}'));
       }
     }
-    calculatePrice();
+    calculatePrice(context);
     recalculateCartCount();
   }
 

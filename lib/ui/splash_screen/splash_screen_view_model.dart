@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../../utilities/general.dart';
+import '../checkout/checkout_view_model.dart';
 import '../home/home_page_screen.dart';
 import '../home/home_page_view_model.dart';
-
+import '../nav_menu/nav_menu_view_model.dart';
 
 class SplashScreenViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -14,7 +15,6 @@ class SplashScreenViewModel extends ChangeNotifier {
     _checkDataAndNavigate();
     // _getToken();
   }
-
 
   // void _getToken() async {
   //   var firebaseToken = await FirebaseMessaging.instance.getToken();
@@ -106,19 +106,31 @@ class SplashScreenViewModel extends ChangeNotifier {
     //     },
     //   );
     // }
-    Future.delayed(
-      const Duration(seconds: 4),
-      () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            CupertinoPageRoute(
-              builder: (_) => ChangeNotifierProvider(
-                create: (context) => HomePageViewModel(),
-                child: const HomePageScreen(),
-              ),
-            ),
-            (route) => false);
-      },
-    );
+    await Provider.of<NavMenuViewModel>(context, listen: false)
+        .getCurrencydata();
+    await Provider.of<NavMenuViewModel>(context, listen: false)
+        .getSelectedCurrency();
+    print(
+        "inside splash screen route ${Provider.of<NavMenuViewModel>(context, listen: false).selectedCurrency.toJson()}");
+    await Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(
+            builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                        create: (context) => HomePageViewModel())
+                  ],
+                  child: HomePageScreen(),
+                )),
+        (route) => false);
+
+    // Future.delayed(
+    //   const Duration(seconds: 2),
+    //   () async {
+    //     // final navdata = Provider.of<NavMenuViewModel>(context, listen: false);
+    //     // await navdata.getCurrencydata();
+
+    //   },
+    // );
   }
 }

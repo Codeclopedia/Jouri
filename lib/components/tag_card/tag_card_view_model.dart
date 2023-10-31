@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../ui/product_archive/product_archive_screen.dart';
 import '../../ui/product_archive/product_archive_view_model.dart';
-
 
 class TagCardViewModel extends ChangeNotifier {
   navigateToArchiveScreen(

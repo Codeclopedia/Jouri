@@ -15,7 +15,6 @@ import '../sign_up/sign_up_view_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   String? email, password;
-  bool loading = false;
   var formKey = GlobalKey<FormState>();
 
   var passwordController = TextEditingController();
@@ -25,8 +24,7 @@ class LoginViewModel extends ChangeNotifier {
   login(context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      loading = true;
-      notifyListeners();
+      General.showProgress(context);
       var url = Constants.baseAuthUrl;
       await HttpRequests.httpPostRequest(
         context: context,
@@ -35,7 +33,8 @@ class LoginViewModel extends ChangeNotifier {
         body: {
           'username': email,
           'password': password,
-        }, //body
+        },
+        //body
         success: (value) async {
           print(value);
           var map = json.decode(value);
@@ -51,6 +50,7 @@ class LoginViewModel extends ChangeNotifier {
                 url: url,
                 headers: {},
                 success: (value, _) {
+                  General.dismissProgress();
                   var user = Customer.fromJson(value);
                   General.saveUser(user.toJson());
                   Navigator.of(context).pushAndRemoveUntil(
@@ -61,16 +61,10 @@ class LoginViewModel extends ChangeNotifier {
                               )),
                       (route) => false);
                 },
-                error: () {
-                  loading = false;
-                  notifyListeners();
-                });
+                error: () {});
           }
         },
-        error: () {
-          loading = false;
-          notifyListeners();
-        },
+        error: () {},
       );
     }
   }

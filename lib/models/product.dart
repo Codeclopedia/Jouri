@@ -101,7 +101,7 @@ class Product {
   dynamic dateOnSaleToGmt;
   bool? onSale;
   bool? purchasable;
-  int? totalSales;
+  String? totalSales;
   bool? virtual;
   bool? downloadable;
   List<dynamic>? downloads;
@@ -112,7 +112,7 @@ class Product {
   String? taxStatus;
   String? taxClass;
   bool? manageStock;
-  dynamic stockQuantity;
+  String? stockQuantity;
   String? backorders;
   bool? backordersAllowed;
   bool? backordered;
@@ -179,7 +179,7 @@ class Product {
             ? null
             : json["short_description"],
         sku: json["sku"] == null ? null : json["sku"],
-        price: json["price"] == null ? null : json["price"],
+        price: json["price"] == null ? null : json["price"].toString(),
         regularPrice:
             json["regular_price"] == null ? null : json["regular_price"],
         salePrice: json["sale_price"] == null ? null : json["sale_price"],
@@ -189,7 +189,7 @@ class Product {
         dateOnSaleToGmt: json["date_on_sale_to_gmt"],
         onSale: json["on_sale"] == null ? null : json["on_sale"],
         purchasable: json["purchasable"] == null ? null : json["purchasable"],
-        totalSales: json["total_sales"] == null ? null : json["total_sales"],
+        totalSales: json["total_sales"].toString(),
         virtual: json["virtual"] == null ? null : json["virtual"],
         downloadable:
             json["downloadable"] == null ? null : json["downloadable"],
@@ -205,7 +205,7 @@ class Product {
         taxStatus: json["tax_status"] == null ? null : json["tax_status"],
         taxClass: json["tax_class"] == null ? null : json["tax_class"],
         manageStock: json["manage_stock"] == null ? null : json["manage_stock"],
-        stockQuantity: json["stock_quantity"],
+        stockQuantity: json["stock_quantity"].toString(),
         backorders: json["backorders"] == null ? null : json["backorders"],
         backordersAllowed: json["backorders_allowed"] == null
             ? null
@@ -327,7 +327,7 @@ class Product {
         "tax_status": taxStatus == null ? null : taxStatus,
         "tax_class": taxClass == null ? null : taxClass,
         "manage_stock": manageStock == null ? null : manageStock,
-        "stock_quantity": stockQuantity,
+        "stock_quantity": stockQuantity.toString(),
         "backorders": backorders == null ? null : backorders,
         "backorders_allowed":
             backordersAllowed == null ? null : backordersAllowed,

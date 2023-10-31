@@ -1,12 +1,10 @@
-import 'package:flutter/foundation.dart';
-
 class Constants {
-  static const String baseUrl = 'https://new.jourikw.com';
+  static const String baseUrl = 'https://revamp.jourikw.com/';
   static const String baseAuthUrl = '$baseUrl/wp-json/jwt-auth/v1/token';
   static const String _consumerKey =
-      'consumer_key=ck_b4c0cc377a3e60cbe2d5b92bbad823e623c7ac91';
+      'consumer_key=ck_2ac4be72f6beada4de7f394ddd2781f0d91d886d';
   static const String _consumerSecret =
-      'consumer_secret=cs_46facf752beb7a9975da758339adb7059c8d9abb';
+      'consumer_secret=cs_038521dbeeed0ba40b0e70c9f256553f0b0ea40e';
   static const String wooAuth = '?$_consumerKey&$_consumerSecret';
   static const String customer = '/wp-json/wc/v3/customers';
   static const String products = '/wp-json/wc/v3/products';
@@ -16,7 +14,7 @@ class Constants {
   static const String terms = '/terms';
   static const String variations = '/variations';
   static const int colorAttributeId = 1;
-  static const int fabricAttributeId = 6;
+  static const int fabricAttributeId = 14;
   static const String productByFabricAttributeTerm =
       'attribute=pa_fabric&attribute_term=';
   static const String mobileBanners = '/wp-json/wp/v2/mobile_banners';
@@ -24,6 +22,10 @@ class Constants {
   static const String termsPageUrl =
       'https://new.jourikw.com/index.php/privacy-policy/';
   static const String orders = '/wp-json/wc/v3/orders';
+  static const String paymentMethod = '/wp-json/wc/v3/payment_gateways';
+  static const String shippingZone = '/wp-json/wc/v3/shipping/zones';
+  static const String shippingZoneLocation = '$shippingZone/{id}/locations';
+  static const String shippingMethod = '$shippingZone/{id}/methods';
   static const String processing = 'processing';
   static const String completed = 'completed';
   static const String canceled = 'cancelled';

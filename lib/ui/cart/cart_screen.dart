@@ -1,16 +1,25 @@
+import 'package:Jouri/models/customer.dart';
 import 'package:Jouri/ui/cart/cart_view_model.dart';
+import 'package:Jouri/ui/checkout/checkout.dart';
+import 'package:Jouri/ui/checkout/checkout_view_model.dart';
+import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/cart_card.dart';
 import '../../components/loading.dart';
+import '../../models/checkout_models/shipping_zone_location.dart';
 import '../../models/product.dart';
 import '../../utilities/general.dart';
 import '../app_bar/app_bar.dart';
 import '../app_bar/app_bar_view_model.dart';
+import '../auth/login/login_screen.dart';
+import '../auth/login/login_view_model.dart';
+import '../checkout/new_checkout_design.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -19,8 +28,8 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var cartData = Provider.of<CartViewModel>(context);
     final GlobalKey<AnimatedListState> _listKey = GlobalKey();
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var currency = currentLang == 'ar' ? ' د.ك' : ' DK';
+    var currentLang = General.getLanguage(context);
+    var currency = General.getCurrency(context);
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
@@ -61,33 +70,7 @@ class CartScreen extends StatelessWidget {
                     height: 20,
                   ),
                   General.getCartCount() == 0
-                      ?
-                      // Container(
-                      //     height: 500,
-                      //     alignment: Alignment.center,
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: [
-                      //         LocalizedText(
-                      //           'cartPage.emptyCart',
-                      //           style: TextStyle(
-                      //             color: Theme.of(context).primaryColor,
-                      //             fontSize: 16,
-                      //             fontWeight: FontWeight.w500,
-                      //             letterSpacing: 3.2,
-                      //           ),
-                      //         ),
-                      //         const SizedBox(
-                      //           height: 20,
-                      //         ),
-                      //         Image.asset('assets/images/empty_cart.png',
-                      //             height: 100,
-                      //             color:
-                      //                 Theme.of(context).colorScheme.secondary)
-                      //       ],
-                      //     ),
-                      //   )
-                      Container(
+                      ? Container(
                           height: 400,
                           child: Lottie.asset(
                             'assets/lottie/empty_cart.json',
@@ -110,7 +93,8 @@ class CartScreen extends StatelessWidget {
                                       children: [
                                         Expanded(
                                           child: ListView.builder(
-                                            itemCount: snapshot.data!.length,
+                                            itemCount:
+                                                cartData.cartProducts.length,
                                             key: _listKey,
                                             shrinkWrap: true,
                                             physics: BouncingScrollPhysics(),
@@ -118,11 +102,13 @@ class CartScreen extends StatelessWidget {
                                               var item = General.getSpecificCart(
                                                   productId: int.parse(
                                                       // snapshot.data![index].translations.ar ??
-                                                      '${snapshot.data![index].id}'));
+                                                      '${cartData.cartProducts[index].id}'));
+
                                               item ??= General.getSpecificCart(
                                                   productId: int.parse(
                                                       // snapshot.data![index].translations.en ??
-                                                      '${snapshot.data![index].id}'));
+                                                      '${cartData.cartProducts[index].id}'));
+
                                               return Column(
                                                 children: [
                                                   const Divider(
@@ -146,8 +132,9 @@ class CartScreen extends StatelessWidget {
                                       'cartPage.orderSummery',
                                       style: titleStyle,
                                     ),
+                                    Divider(),
                                     const SizedBox(
-                                      height: 15,
+                                      height: 6,
                                     ),
                                     ListTile(
                                       title: Text(
@@ -164,9 +151,12 @@ class CartScreen extends StatelessWidget {
                                       leading: Icon(
                                         Icons.monetization_on,
                                         color: Theme.of(context).primaryColor,
+                                        size: 30,
                                       ),
                                       trailing: Text(
-                                        cartData.calculatePrice() + currency,
+                                        cartData.calculatePrice(context) +
+                                            " " +
+                                            currency.symbol!,
                                         style: TextStyle(
                                           fontFamily: 'OpenSans',
                                           color: Theme.of(context).primaryColor,
@@ -176,12 +166,67 @@ class CartScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
+                                    Divider(),
+                                    Text(
+                                      "* The current total doesn't include any shipping charges. Required fee and charges will be added later .",
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.02),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.02),
                                     Row(
                                       children: [
                                         Expanded(
                                           child: ElevatedButton(
-                                            onPressed: () {
-                                              // Navigator.of(context).push(CupertinoPageRoute(builder: (_)=>ShippingMethodsScreen()));
+                                            onPressed: () async {
+                                              if (cartData
+                                                  .cartProducts.isNotEmpty) {
+                                                EasyLoading.show();
+                                                await Provider.of<
+                                                            CheckoutViewModel>(
+                                                        context,
+                                                        listen: false)
+                                                    .loadAllShippingZoneLocations(
+                                                        context);
+                                                EasyLoading.dismiss();
+                                                var user =
+                                                    await General.getUser();
+                                                if (user == null) {
+                                                  showGuestDialog(
+                                                      context,
+                                                      context
+                                                          .read<
+                                                              CheckoutViewModel>()
+                                                          .countryCodeList);
+                                                } else {
+                                                  var customer =
+                                                      Customer.fromJson(user);
+
+                                                  Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                                  MultiProvider(
+                                                                    providers: [
+                                                                      ChangeNotifierProvider(
+                                                                          create: (context) =>
+                                                                              CartViewModel()),
+                                                                    ],
+                                                                    child: CheckoutDetailsPage(
+                                                                        customer:
+                                                                            customer,
+                                                                        countryCodeList: context
+                                                                            .read<CheckoutViewModel>()
+                                                                            .countryCodeList),
+                                                                  )));
+                                                }
+                                              }
                                             },
                                             child: const LocalizedText(
                                                 'cartPage.proceed'),
@@ -206,6 +251,93 @@ class CartScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showGuestDialog(
+      BuildContext context, List<ShippingZoneLocation> countryCodeList) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Image.asset(
+            'assets/images/logo.png',
+            height: 100,
+          ),
+          elevation: 5,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                General.getTranslatedText(context, 'cartPage.notLoggedIn'),
+                textAlign: TextAlign.center,
+              ),
+              Container(
+                width: 230,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => ChangeNotifierProvider(
+                              create: (context) => LoginViewModel(),
+                              child: const LoginScreen(),
+                            )));
+                  },
+                  child: Text(
+                    General.getTranslatedText(context, 'navMenu.login'),
+                  ),
+                ),
+              ),
+              Container(
+                width: 230,
+                child: TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => MultiProvider(
+                                  providers: [
+                                    ChangeNotifierProvider(
+                                      create: (context) => CartViewModel(),
+                                    ),
+                                  ],
+                                  child: CheckoutDetailsPage(
+                                    countryCodeList: countryCodeList,
+                                  ),
+                                )));
+                  },
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(
+                      BorderSide(
+                        color: Theme.of(context).primaryColor,
+                        width: 2,
+                      ),
+                    ),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    overlayColor: MaterialStateProperty.all(
+                      Theme.of(context).primaryColor.withOpacity(0.1),
+                    ),
+                  ),
+                  child: Text(
+                    General.getTranslatedText(
+                        context, 'cartPage.proceedAsGuest'),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:Jouri/models/currency_data_response.dart';
 import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
@@ -13,8 +15,8 @@ class NavMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var navMenuData = Provider.of<NavMenuViewModel>(context);
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
+    var navMenuData = Provider.of<NavMenuViewModel>(context, listen: false);
+    var currentLang = General.getLanguage(context);
     TextDirection direction =
         currentLang == 'ar' ? TextDirection.rtl : TextDirection.ltr;
     TextStyle itemStyle = TextStyle(
@@ -28,22 +30,61 @@ class NavMenu extends StatelessWidget {
       child: ListView(
         shrinkWrap: true,
         children: [
-          ListTile(
-            // leading: Icon(
-            //   Icons.language,
-            //   color: Theme.of(context).colorScheme.secondary,
-            // ),
-            title: Text(
-              currentLang == 'ar' ? 'English' : 'عربي',
-              textDirection: direction,
-              style: itemStyle,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    currentLang == 'ar'
+                        ? General.changeLanguage(context, 'en')
+                        : General.changeLanguage(context, 'ar');
+                  },
+                  child: Text(
+                    currentLang == 'ar' ? 'English' : 'عربي',
+                    textDirection: direction,
+                    style: itemStyle,
+                  ),
+                ),
+                DropdownButton<dynamic>(
+                  value: context
+                          .watch<NavMenuViewModel>()
+                          .selectedCurrency
+                          .currency ??
+                      Provider.of<NavMenuViewModel>(context, listen: false)
+                          .currecyList[0]
+                          .currency,
+
+                  // Down Arrow Icon
+                  icon: const Icon(Icons.keyboard_arrow_down),
+
+                  // Array list of items
+                  items:
+                      navMenuData.currecyList.map((CurrencyData currencyData) {
+                    return DropdownMenuItem(
+                      value: currencyData.currency,
+                      child: Row(
+                        children: [
+                          Text(currencyData.symbol.toString()),
+                          Text(currencyData.currency ?? ""),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  // After selecting the desired option,it will
+                  // change button value to selected value
+                  onChanged: (value) {
+                    Provider.of<NavMenuViewModel>(context, listen: false)
+                        .changeSelectedCurrency(navMenuData.currecyList
+                            .firstWhere(
+                                (element) => element.currency == value));
+                  },
+                ),
+              ],
             ),
-            onTap: () {
-              currentLang == 'ar'
-                  ? General.changeLanguage(context, 'en')
-                  : General.changeLanguage(context, 'ar');
-            },
           ),
+          Divider(),
           ListTile(
             // leading: Icon(
             //   Icons.monetization_on_outlined,

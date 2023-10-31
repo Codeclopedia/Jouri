@@ -17,7 +17,7 @@ class CustomTextFormField extends StatefulWidget {
       this.icon,
       this.onChange,
       this.onFieldSubmitted,
-      this.textInputAction,
+      this.textInputAction = TextInputAction.next,
       this.textInputType = TextInputType.text,
       this.enable = true,
       this.controller,
@@ -63,8 +63,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             color: Color(0xffe9e9e9),
           )),
           focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.secondary),
+            borderSide: BorderSide(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.5)),
           ),
           labelText: widget.hint,
           hintStyle: const TextStyle(color: Colors.grey),

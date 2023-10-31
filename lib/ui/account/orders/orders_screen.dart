@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../components/loading.dart';
 import '../../../components/order_card.dart';
 import '../../../models/order.dart';
+import '../../../utilities/general.dart';
 import '../../app_bar/app_bar.dart';
 import '../../app_bar/app_bar_view_model.dart';
 import '../../cart/cart_view_model.dart';
@@ -17,8 +18,8 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var ordersData = Provider.of<OrdersViewModel>(context, listen: false);
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
+    var currentLang = General.getLanguage(context);
+    var currency = General.getCurrency(context);
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
@@ -80,7 +81,7 @@ class OrdersScreen extends StatelessWidget {
                                         itemBuilder: (context, index) {
                                           return OrderCard(
                                               order: snapshot.data![index],
-                                              currency: currency);
+                                              currency: currency.symbol!);
                                         })
                                     : Center(
                                         child: Container(
@@ -105,7 +106,7 @@ class OrdersScreen extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return OrderCard(
                                       order: ordersData.loadedOrders[index],
-                                      currency: currency);
+                                      currency: currency.symbol!);
                                 })
                             : Center(
                                 child: Container(

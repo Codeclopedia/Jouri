@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +41,7 @@ class ProductCardViewModel extends ChangeNotifier {
       HapticFeedback.vibrate();
       notifyListeners();
     } else {
-      final scaffold = Scaffold.of(context);
+      final scaffold = ScaffoldMessenger.of(context);
       scaffold.showSnackBar(
         SnackBar(
           content: const LocalizedText('productDetailsPage.haveToLogin'),
@@ -80,12 +79,16 @@ class ProductCardViewModel extends ChangeNotifier {
 
   navigateToProductDetailsScreen(context, Product gridItem) {
     var isVariable = gridItem.type == 'variable' ? true : false;
+
     Navigator.of(context).push(CupertinoPageRoute(
-      builder: (BuildContext context) => ChangeNotifierProvider(
-        create: (context) =>
-            ProductDetailsViewModel(product: gridItem, isVariable: isVariable),
-        child: const ProductDetailsScreen(),
-      ),
-    ));
+        builder: (BuildContext context) => MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                  create: (context) => ProductDetailsViewModel(
+                      product: product, isVariable: isVariable),
+                )
+              ],
+              child: const ProductDetailsScreen(),
+            )));
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:Jouri/models/currency_data_response.dart';
+import 'package:Jouri/ui/nav_menu/nav_menu_view_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -9,20 +11,34 @@ import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../components/custom_progress_dialog.dart';
 import '../models/product.dart';
 
 class General {
   // static ArsProgressDialog _progressDialog;
-  static SimpleFontelicoProgressDialog? _dialog;
+  static CustomProgressDialog? _dialog;
 
   static Future<String?> getStringSP(String key) async {
     final sp = await SharedPreferences.getInstance();
     var data = sp.getString(key);
     return data;
   }
+
+  static Map<String, dynamic> removeNullsFromMap(Map<String, dynamic> json) =>
+      json
+        ..removeWhere((String key, dynamic value) => value == null)
+        ..map<String, dynamic>(
+            (key, value) => MapEntry(key, removeNulls(value)));
+
+  static List removeNullsFromList(List list) => list
+    ..removeWhere((value) => value == null)
+    ..map((e) => removeNulls(e)).toList();
+
+  static removeNulls(e) => (e is List)
+      ? removeNullsFromList(e)
+      : (e is Map<String, dynamic> ? removeNullsFromMap(e) : e);
 
   static Future<bool> searchInSP(String key) async {
     final sp = await SharedPreferences.getInstance();
@@ -37,6 +53,7 @@ class General {
   static String getTranslatedText(context, key,
       {Map<String, dynamic>? params}) {
     final localizations = Provider.of<KLocalizations>(context, listen: false);
+
     return localizations.translate(key, params: params);
   }
 
@@ -48,11 +65,13 @@ class General {
   static void changeLanguage(context, langKey) {
     final localizations = Provider.of<KLocalizations>(context, listen: false);
     localizations.setLocale(Locale(langKey));
+    print("new language $langKey");
     General.setStringSP('lang', '$langKey');
   }
 
   static String getLanguage(context) {
     final localizations = Provider.of<KLocalizations>(context, listen: false);
+    print(localizations.locale.languageCode);
     return localizations.locale.languageCode;
   }
 
@@ -61,14 +80,8 @@ class General {
   }
 
   static showProgress(context, {color = Colors.black38}) {
-    _dialog = SimpleFontelicoProgressDialog(
-        context: context, barrierDimisable: false);
-    _dialog?.show(
-        message: '',
-        elevation: 5,
-        indicatorColor: Theme.of(context).primaryColor,
-        radius: 20,
-        type: SimpleFontelicoProgressDialogType.phoenix);
+    _dialog = CustomProgressDialog(context: context, isDismissible: false);
+    _dialog?.show();
   }
 
   static void saveUser(String data) {
@@ -90,7 +103,7 @@ class General {
         animType: AnimType.RIGHSLIDE,
         headerAnimationLoop: false,
         title: getTranslatedText(context, 'config.error'),
-        desc: '$message',
+        desc: General.getTranslatedText(context, '$message'),
         btnOkOnPress: () {},
         btnOkIcon: Icons.cancel,
         btnOkText: getTranslatedText(context, 'config.ok'),
@@ -142,13 +155,30 @@ class General {
     return input;
   }
 
+  static CurrencyData getCurrency(
+    context,
+  ) {
+    final instanceOfprovider =
+        Provider.of<NavMenuViewModel>(context, listen: false);
+    final selectCurrency = instanceOfprovider.selectedCurrency;
+    print("selected currency ${selectCurrency.toJson()}");
+
+    return selectCurrency;
+  }
+
   static launchURL(url) async {
     url = Uri.encodeFull(url);
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       throw 'Error launching $url';
     }
+  }
+
+  double selectedCurrencyPrice({required String? price, required double rate}) {
+    return double.parse(
+            price?.trim().isNotEmpty ?? false ? price ?? '1.0' : '1.0') *
+        rate;
   }
 
   static Future<bool> checkUserAvailability() async {
@@ -254,6 +284,7 @@ class General {
 
   static void initCart() async {
     _cart = FlutterCart();
+
     if (_box.hasData('cart')) {
       List<CartItem> items = [];
       List data = json.decode(_box.read('cart'));
@@ -275,7 +306,9 @@ class General {
       required quantity,
       variation}) async {
     if (_cart == null) initCart();
+
     var item = _cart!.getSpecificItemFromCart(productId);
+
     if (item == null) {
       var message = _cart?.addToCart(
           productId: productId,
@@ -343,11 +376,16 @@ class General {
     return count;
   }
 
-  static double getCartPrice() {
+  static double getCartPrice(BuildContext context) {
     if (_cart == null) initCart();
     var price = _cart!.getTotalAmount();
+    print("total of cart $price");
     price = double.parse(price.toString());
-    return price;
+    return price *
+            Provider.of<NavMenuViewModel>(context, listen: false)
+                .selectedCurrency
+                .rate ??
+        1.0;
   }
 
   static List<int> getCartIds() {

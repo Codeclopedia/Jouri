@@ -16,6 +16,8 @@ class ProductArchiveViewModel extends ChangeNotifier {
   final int? archiveId;
   final String? archiveName, archiveDescription, parentCat;
 
+  bool loading = false;
+
   ProductArchiveViewModel(
       {required this.tag,
       required this.category,
@@ -86,7 +88,7 @@ class ProductArchiveViewModel extends ChangeNotifier {
           });
           totalPage = int.parse(map[Constants.totalPagesKey] ?? '1');
           print('total pages: $totalPage');
-          notifyListeners();
+          // notifyListeners();
         },
         error: () {});
 
@@ -95,6 +97,8 @@ class ProductArchiveViewModel extends ChangeNotifier {
 
   loadMore(context, lang) async {
     if (page != totalPage && page < totalPage) {
+      loading = true;
+      notifyListeners();
       page++;
       var url;
       if (category) {
@@ -137,6 +141,7 @@ class ProductArchiveViewModel extends ChangeNotifier {
           },
           error: () {});
       saving = false;
+      loading = false;
       notifyListeners();
     }
   }
@@ -172,11 +177,11 @@ class ProductArchiveViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  filterProduct(context) async {
+  filterProduct(context, SfRangeValues rangeData) async {
     priceRangeData = await showMaterialModalBottomSheet(
       context: context,
       builder: (context) => FilterBottomSheet(
-        data: priceRangeData,
+        data: rangeData,
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

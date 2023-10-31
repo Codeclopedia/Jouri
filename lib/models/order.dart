@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'customer.dart';
+
 class Order {
   Order({
     this.id,
@@ -253,66 +255,6 @@ class Order {
       };
 }
 
-class Ing {
-  Ing({
-    this.firstName,
-    this.lastName,
-    this.company,
-    this.address1,
-    this.address2,
-    this.city,
-    this.state,
-    this.postcode,
-    this.country,
-    this.email,
-    this.phone,
-  });
-
-  String? firstName;
-  String? lastName;
-  String? company;
-  String? address1;
-  String? address2;
-  String? city;
-  String? state;
-  String? postcode;
-  String? country;
-  String? email;
-  String? phone;
-
-  factory Ing.fromJson(String str) => Ing.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory Ing.fromMap(Map<String, dynamic> json) => Ing(
-        firstName: json["first_name"] == null ? null : json["first_name"],
-        lastName: json["last_name"] == null ? null : json["last_name"],
-        company: json["company"] == null ? null : json["company"],
-        address1: json["address_1"] == null ? null : json["address_1"],
-        address2: json["address_2"] == null ? null : json["address_2"],
-        city: json["city"] == null ? null : json["city"],
-        state: json["state"] == null ? null : json["state"],
-        postcode: json["postcode"] == null ? null : json["postcode"],
-        country: json["country"] == null ? null : json["country"],
-        email: json["email"] == null ? null : json["email"],
-        phone: json["phone"] == null ? null : json["phone"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "first_name": firstName == null ? null : firstName,
-        "last_name": lastName == null ? null : lastName,
-        "company": company == null ? null : company,
-        "address_1": address1 == null ? null : address1,
-        "address_2": address2 == null ? null : address2,
-        "city": city == null ? null : city,
-        "state": state == null ? null : state,
-        "postcode": postcode == null ? null : postcode,
-        "country": country == null ? null : country,
-        "email": email == null ? null : email,
-        "phone": phone == null ? null : phone,
-      };
-}
-
 class LineItem {
   LineItem({
     this.id,
@@ -346,7 +288,7 @@ class LineItem {
   List<dynamic>? taxes;
   List<LineItemMetaDatum>? metaData;
   String? sku;
-  int? price;
+  double? price;
   String? parentName;
   ProductData? productData;
 
@@ -391,7 +333,8 @@ class LineItem {
         "subtotal_tax": subtotalTax == null ? null : subtotalTax,
         "total": total == null ? null : total,
         "total_tax": totalTax == null ? null : totalTax,
-        "taxes": taxes == null ? null : List<dynamic>.from(taxes!.map((x) => x)),
+        "taxes":
+            taxes == null ? null : List<dynamic>.from(taxes!.map((x) => x)),
         "meta_data": metaData == null
             ? null
             : List<dynamic>.from(metaData!.map((x) => x.toMap())),
@@ -499,7 +442,6 @@ class ProductData {
     this.purchaseNote,
     this.categories,
     this.tags,
-    this.images,
     this.attributes,
     this.defaultAttributes,
     this.variations,
@@ -572,7 +514,6 @@ class ProductData {
   String? purchaseNote;
   List<Category>? categories;
   List<Category>? tags;
-  List<Image>? images;
   List<Attribute>? attributes;
   List<dynamic>? defaultAttributes;
   List<int>? variations;
@@ -693,9 +634,6 @@ class ProductData {
         tags: json["tags"] == null
             ? null
             : List<Category>.from(json["tags"].map((x) => Category.fromMap(x))),
-        images: json["images"] == null
-            ? null
-            : List<Image>.from(json["images"].map((x) => Image.fromMap(x))),
         attributes: json["attributes"] == null
             ? null
             : List<Attribute>.from(
@@ -805,9 +743,6 @@ class ProductData {
         "tags": tags == null
             ? null
             : List<dynamic>.from(tags!.map((x) => x.toMap())),
-        "images": images == null
-            ? null
-            : List<dynamic>.from(images!.map((x) => x.toMap())),
         "attributes": attributes == null
             ? null
             : List<dynamic>.from(attributes!.map((x) => x.toMap())),
@@ -1063,66 +998,6 @@ class Dimensions {
       };
 }
 
-class Image {
-  Image({
-    this.id,
-    this.dateCreated,
-    this.dateCreatedGmt,
-    this.dateModified,
-    this.dateModifiedGmt,
-    this.src,
-    this.name,
-    this.alt,
-  });
-
-  int? id;
-  DateTime? dateCreated;
-  DateTime? dateCreatedGmt;
-  DateTime? dateModified;
-  DateTime? dateModifiedGmt;
-  String? src;
-  String? name;
-  String? alt;
-
-  factory Image.fromJson(String str) => Image.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory Image.fromMap(Map<String, dynamic> json) => Image(
-        id: json["id"] == null ? null : json["id"],
-        dateCreated: json["date_created"] == null
-            ? null
-            : DateTime.parse(json["date_created"]),
-        dateCreatedGmt: json["date_created_gmt"] == null
-            ? null
-            : DateTime.parse(json["date_created_gmt"]),
-        dateModified: json["date_modified"] == null
-            ? null
-            : DateTime.parse(json["date_modified"]),
-        dateModifiedGmt: json["date_modified_gmt"] == null
-            ? null
-            : DateTime.parse(json["date_modified_gmt"]),
-        src: json["src"] == null ? null : json["src"],
-        name: json["name"] == null ? null : json["name"],
-        alt: json["alt"] == null ? null : json["alt"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "id": id == null ? null : id,
-        "date_created":
-            dateCreated == null ? null : dateCreated!.toIso8601String(),
-        "date_created_gmt":
-            dateCreatedGmt == null ? null : dateCreatedGmt!.toIso8601String(),
-        "date_modified":
-            dateModified == null ? null : dateModified!.toIso8601String(),
-        "date_modified_gmt":
-            dateModifiedGmt == null ? null : dateModifiedGmt!.toIso8601String(),
-        "src": src == null ? null : src,
-        "name": name == null ? null : name,
-        "alt": alt == null ? null : alt,
-      };
-}
-
 class ProductDataMetaDatum {
   ProductDataMetaDatum({
     this.id,
@@ -1374,7 +1249,8 @@ class ShippingLine {
         "instance_id": instanceId == null ? null : instanceId,
         "total": total == null ? null : total,
         "total_tax": totalTax == null ? null : totalTax,
-        "taxes": taxes == null ? null : List<dynamic>.from(taxes!.map((x) => x)),
+        "taxes":
+            taxes == null ? null : List<dynamic>.from(taxes!.map((x) => x)),
         "meta_data": metaData == null
             ? null
             : List<dynamic>.from(metaData!.map((x) => x.toMap())),

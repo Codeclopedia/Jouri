@@ -15,6 +15,7 @@ import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../cart/cart_view_model.dart';
+import '../checkout/checkout_view_model.dart';
 import '../nav_menu/nav_menu.dart';
 import '../nav_menu/nav_menu_view_model.dart';
 
@@ -33,122 +34,123 @@ class HomePageScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xfff8f9ff),
-        drawer: ChangeNotifierProvider(
-            create: (context) => NavMenuViewModel(), child: const NavMenu()),
+        drawer: const NavMenu(),
         drawerScrimColor: Theme.of(context).primaryColor,
-        body: SingleChildScrollView(
-          padding: EdgeInsets.zero,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// app bar
-              MultiProvider(providers: [
-                ChangeNotifierProvider(
-                  create: (context) => AppBarViewModel(withCartButton: true),
-                ),
-                ChangeNotifierProvider(
-                  create: (context) => CartViewModel(),
-                ),
-              ], child: const AppBarSection()),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            /// app bar
+            MultiProvider(providers: [
+              ChangeNotifierProvider(
+                  create: (context) => AppBarViewModel(withCartButton: true)),
+              ChangeNotifierProvider(create: (context) => CartViewModel()),
+            ], child: const AppBarSection()),
 
-              /// body
-              Container(
-                height: 80,
-                child: ListView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+            /// body
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        homeScreenData.callLatestProductsTab(context);
-                      },
-                      child: LocalizedText(
-                        'homePage.newIn',
-                        style: homeScreenData.latest
-                            ? tabStyle
-                            : tabStyle.copyWith(
-                                color: const Color(0xffadafb5),
-                              ),
+                    Container(
+                      height: 80,
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 20),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              homeScreenData.callLatestProductsTab(context);
+                            },
+                            child: LocalizedText(
+                              'homePage.newIn',
+                              style: homeScreenData.latest
+                                  ? tabStyle
+                                  : tabStyle.copyWith(
+                                      color: const Color(0xffadafb5),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              homeScreenData.callCollectionsTab(context);
+                            },
+                            child: LocalizedText(
+                              'homePage.collections',
+                              style: homeScreenData.collections
+                                  ? tabStyle
+                                  : tabStyle.copyWith(
+                                      color: const Color(0xffadafb5)),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              homeScreenData.callFabricsTab(context);
+                            },
+                            child: LocalizedText(
+                              'homePage.fabrics',
+                              style: homeScreenData.fabrics
+                                  ? tabStyle
+                                  : tabStyle.copyWith(
+                                      color: const Color(0xffadafb5)),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              homeScreenData.callOnSaleTab(context);
+                            },
+                            child: LocalizedText(
+                              'homePage.onSale',
+                              style: homeScreenData.onSale
+                                  ? tabStyle.copyWith(
+                                      color: const Color(0xffc91f1f),
+                                    )
+                                  : tabStyle.copyWith(
+                                      color: const Color(0xffadafb5),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        homeScreenData.callCollectionsTab(context);
-                      },
-                      child: LocalizedText(
-                        'homePage.collections',
-                        style: homeScreenData.collections
-                            ? tabStyle
-                            : tabStyle.copyWith(
-                                color: const Color(0xffadafb5)),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        homeScreenData.callFabricsTab(context);
-                      },
-                      child: LocalizedText(
-                        'homePage.fabrics',
-                        style: homeScreenData.fabrics
-                            ? tabStyle
-                            : tabStyle.copyWith(
-                                color: const Color(0xffadafb5)),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        homeScreenData.callOnSaleTab(context);
-                      },
-                      child: LocalizedText(
-                        'homePage.onSale',
-                        style: homeScreenData.onSale
-                            ? tabStyle.copyWith(
-                                color: const Color(0xffc91f1f),
-                              )
-                            : tabStyle.copyWith(
-                                color: const Color(0xffadafb5),
-                              ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
+                    homeScreenData.latest
+                        ? ChangeNotifierProvider(
+                            create: (context) => LatestProductsTabViewModel(),
+                            child: const LatestProductsTab())
+                        : Container(),
+                    homeScreenData.collections
+                        ? ChangeNotifierProvider(
+                            create: (context) => CollectionsTabViewModel(),
+                            child: const CollectionsTab())
+                        : Container(),
+                    homeScreenData.fabrics
+                        ? ChangeNotifierProvider(
+                            create: (context) => FabricsTabViewModel(),
+                            child: const FabricsTab())
+                        : Container(),
+                    homeScreenData.onSale
+                        ? ChangeNotifierProvider(
+                            create: (context) => OnSaleTabViewModel(),
+                            child: const OnSaleTab())
+                        : Container(),
                   ],
                 ),
               ),
-              homeScreenData.latest
-                  ? ChangeNotifierProvider(
-                      create: (context) => LatestProductsTabViewModel(),
-                      child: const LatestProductsTab())
-                  : Container(),
-              homeScreenData.collections
-                  ? ChangeNotifierProvider(
-                      create: (context) => CollectionsTabViewModel(),
-                      child: const CollectionsTab())
-                  : Container(),
-              homeScreenData.fabrics
-                  ? ChangeNotifierProvider(
-                      create: (context) => FabricsTabViewModel(),
-                      child: const FabricsTab())
-                  : Container(),
-              homeScreenData.onSale
-                  ? ChangeNotifierProvider(
-                      create: (context) => OnSaleTabViewModel(),
-                      child: const OnSaleTab())
-                  : Container(),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

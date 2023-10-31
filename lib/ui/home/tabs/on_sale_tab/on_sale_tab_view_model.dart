@@ -39,7 +39,7 @@ class OnSaleTabViewModel extends ChangeNotifier {
           });
           totalPage = int.parse(map[Constants.totalPagesKey] ?? '1');
           print('total pages: $totalPage');
-          notifyListeners();
+          // notifyListeners();
         },
         error: () {});
 
@@ -117,7 +117,7 @@ class OnSaleTabViewModel extends ChangeNotifier {
       expand: false,
       enableDrag: true,
     );
-    _addPriceRange(priceRangeData);
+    // _addPriceRange(priceRangeData);
   }
 
   void _addPriceRange(SfRangeValues? priceRangeData) {

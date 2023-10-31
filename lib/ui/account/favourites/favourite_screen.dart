@@ -1,14 +1,15 @@
 import 'package:Jouri/ui/account/favourites/favourite_view_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utilities/general.dart';
 import '../../app_bar/app_bar.dart';
 import '../../app_bar/app_bar_view_model.dart';
 import '../../cart/cart_view_model.dart';
-
 
 class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({Key? key}) : super(key: key);
@@ -21,8 +22,8 @@ class FavouriteScreen extends StatelessWidget {
       fontSize: 22,
       letterSpacing: 4.2,
     );
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
-    var currency = currentLang == 'ar' ? 'د.ك' : 'DK';
+    var currentLang = General.getLanguage(context);
+    var currency = General.getCurrency(context);
     var itemTitleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
       fontSize: 11,
@@ -80,8 +81,7 @@ class FavouriteScreen extends StatelessWidget {
 
                     ///grid
                     favData.favProducts.isEmpty
-                        ?
-                        Container(
+                        ? Container(
                             height: 400,
                             child: Lottie.asset(
                               'assets/lottie/empty_fav.json',
@@ -140,10 +140,19 @@ class FavouriteScreen extends StatelessWidget {
                                                                     .circular(
                                                                         5)),
                                                             child:
-                                                                Image.network(
+                                                                CachedNetworkImage(
+                                                              imageUrl: e.src!,
+                                                              fit: BoxFit.cover,
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  Icon(Icons
+                                                                      .error),
+                                                            ) /* Image.network(
                                                               e.src!,
                                                               fit: BoxFit.cover,
-                                                            ),
+                                                            ) */
+                                                            ,
                                                           ))
                                                       .toList())
                                               : Image.asset(
@@ -164,7 +173,7 @@ class FavouriteScreen extends StatelessWidget {
                                                 IconButton(
                                                     icon: Icon(
                                                       Icons.favorite,
-                                                      color: isFav
+                                                      color: isFav == true
                                                           ? Colors.red
                                                           : Theme.of(context)
                                                               .primaryColor,
@@ -208,9 +217,7 @@ class FavouriteScreen extends StatelessWidget {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Text(
-                                                favData.favProducts[index]
-                                                        .regularPrice! +
-                                                    currency,
+                                                "${General().selectedCurrencyPrice(price: favData.favProducts[index].regularPrice, rate: currency.rate!).toStringAsFixed(2)} ${currency.symbol}",
                                                 style: favData
                                                                 .favProducts[
                                                                     index]
@@ -234,9 +241,7 @@ class FavouriteScreen extends StatelessWidget {
                                                           .onSale ==
                                                       true
                                                   ? Text(
-                                                      favData.favProducts[index]
-                                                              .salePrice! +
-                                                          currency,
+                                                      "${General().selectedCurrencyPrice(price: favData.favProducts[index].salePrice, rate: currency.rate!).toStringAsFixed(2)} ${currency.symbol}",
                                                       style: itemPriceStyle
                                                           .copyWith(
                                                               color: const Color(

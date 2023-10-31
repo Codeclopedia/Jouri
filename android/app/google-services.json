@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "383330759027",
+    "firebase_url": "https://jouri-cad5d.firebaseio.com",
+    "project_id": "jouri-cad5d",
+    "storage_bucket": "jouri-cad5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383330759027:android:3df0c68f893eabc4",
+        "android_client_info": {
+          "package_name": "com.jourikw.Jouri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "383330759027-7kdfghhqtpe1d42h5smr2fe8nf0ffi0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhr82T6RlZaE2MhihSx6OhY0bm0SjekGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "383330759027-7kdfghhqtpe1d42h5smr2fe8nf0ffi0r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "383330759027-sl0613l7i35be329djlo4cl8uer1hi0h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jourikw.Jouri"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -47,6 +47,11 @@ class AttributeTerm {
         "count": count == null ? null : count,
         "_links": links == null ? null : links!.toMap(),
       };
+
+  @override
+  String toString() {
+    return toJson();
+  }
 }
 
 class Links {

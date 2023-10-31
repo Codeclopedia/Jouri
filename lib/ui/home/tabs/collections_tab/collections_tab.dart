@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../components/loading.dart';
 import '../../../../components/tag_card/tag_card.dart';
 import '../../../../components/tag_card/tag_card_view_model.dart';
+import '../../../../utilities/general.dart';
 import 'collections_tab_view_model.dart';
 
 class CollectionsTab extends StatelessWidget {
@@ -16,7 +17,7 @@ class CollectionsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var collectionsTabData = Provider.of<CollectionsTabViewModel>(context);
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
+    var currentLang = General.getLanguage(context);
 
     return SingleChildScrollView(
       padding: EdgeInsets.zero,

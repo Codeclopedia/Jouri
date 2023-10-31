@@ -1,6 +1,5 @@
 import 'package:Jouri/ui/splash_screen/splash_screen_view_model.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 import '../../components/loading.dart';
@@ -11,6 +10,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var splashScreenData = Provider.of<SplashScreenViewModel>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

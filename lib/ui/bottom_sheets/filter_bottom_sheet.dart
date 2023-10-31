@@ -64,12 +64,34 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             minLeadingWidth: 20,
           ),
           SfRangeSlider(
-            min: 10.0,
-            max: 30.0,
+            min: values.start,
+            max: values.end,
             values: values,
             onChanged: (value) {
               setState(() {
                 values = value;
+              });
+            },
+            stepSize: 1,
+            showTicks: true,
+            showLabels: true,
+            enableTooltip: true,
+            interval: 2,
+            startThumbIcon: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ),
+            endThumbIcon: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ),
+            activeColor: Colors.grey,
+          ),
+          SfRangeSlider(
+            min: 0,
+            max: 10,
+            values: SfRangeValues(0, 14),
+            onChanged: (value) {
+              setState(() {
+                // values = value;
               });
             },
             stepSize: 1,

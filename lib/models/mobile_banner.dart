@@ -19,7 +19,6 @@ class MobileBanner {
     this.title,
     this.featuredMedia,
     this.template,
-    this.meta,
     this.acf,
     this.links,
   });
@@ -37,7 +36,6 @@ class MobileBanner {
   Guid? title;
   FeaturedMedia? featuredMedia;
   String? template;
-  List<dynamic>? meta;
   List<dynamic>? acf;
   Links? links;
 
@@ -66,9 +64,6 @@ class MobileBanner {
             ? null
             : FeaturedMedia.fromMap(json["featured_media"]),
         template: json["template"] == null ? null : json["template"],
-        meta: json["meta"] == null
-            ? null
-            : List<dynamic>.from(json["meta"].map((x) => x)),
         acf: json["acf"] == null
             ? null
             : List<dynamic>.from(json["acf"].map((x) => x)),
@@ -90,7 +85,6 @@ class MobileBanner {
         "title": title == null ? null : title!.toMap(),
         "featured_media": featuredMedia == null ? null : featuredMedia!.toMap(),
         "template": template == null ? null : template,
-        "meta": meta == null ? null : List<dynamic>.from(meta!.map((x) => x)),
         "acf": acf == null ? null : List<dynamic>.from(acf!.map((x) => x)),
         "_links": links == null ? null : links!.toMap(),
       };

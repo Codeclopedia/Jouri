@@ -1,4 +1,5 @@
 import 'package:Jouri/ui/home/tabs/latest_products_tab/latest_products_tab_view_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -10,6 +11,7 @@ import '../../../../components/loading.dart';
 import '../../../../components/product_loading.dart';
 import '../../../../models/mobile_banner.dart';
 import '../../../../models/product.dart';
+import '../../../../utilities/general.dart';
 
 class LatestProductsTab extends StatelessWidget {
   const LatestProductsTab({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class LatestProductsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     var latestProductsTabData =
         Provider.of<LatestProductsTabViewModel>(context);
-    var currentLang = KLocalizations.of(context).locale.toLanguageTag();
+    var currentLang = General.getLanguage(context);
 
     var titleStyle = TextStyle(
       color: Theme.of(context).primaryColor,
@@ -51,10 +53,16 @@ class LatestProductsTab extends StatelessWidget {
                           children: snapshot.data!
                               .map((item) => ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      item.featuredMedia!.large!,
+                                    child: CachedNetworkImage(
+                                      imageUrl: item.featuredMedia!.large!,
                                       fit: BoxFit.cover,
-                                    ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ) /*  Image.network(
+                                                        item.featuredMedia!.large!,
+                                                        fit: BoxFit.cover,
+                                                      ) */
+                                    ,
                                   ))
                               .toList(),
                         ),
@@ -74,15 +82,34 @@ class LatestProductsTab extends StatelessWidget {
                     initialPage: 0,
                     indicatorColor: Theme.of(context).colorScheme.secondary,
                     autoPlayInterval: 4000,
-                    children: latestProductsTabData.loadedBanners
-                        .map((item) => ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
+                    children: latestProductsTabData.loadedBanners.map((item) {
+                      print("image link is ${item.featuredMedia?.large}");
+                      try {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            item.featuredMedia?.large ?? "",
+                            fit: BoxFit.cover,
+                          ) /* Image.network(
                                 item.featuredMedia!.large!,
                                 fit: BoxFit.cover,
-                              ),
-                            ))
-                        .toList(),
+                              ) */
+                          ,
+                        );
+                      } catch (e) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            "https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fimage&psig=AOvVaw22JpoN4UGHUdIekISBUAxY&ust=1686139779557000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNjOpKbOrv8CFQAAAAAdAAAAABAE",
+                            fit: BoxFit.cover,
+                          ) /* Image.network(
+                                item.featuredMedia!.large!,
+                                fit: BoxFit.cover,
+                              ) */
+                          ,
+                        );
+                      }
+                    }).toList(),
                   ),
                 ),
           const SizedBox(
@@ -135,16 +162,23 @@ class LatestProductsTab extends StatelessWidget {
                                 return InkWell(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
-                                    child:
-                                        snapshot.data![index].images!.isNotEmpty
-                                            ? Image.network(
+                                    child: snapshot
+                                            .data![index].images!.isNotEmpty
+                                        ? CachedNetworkImage(
+                                            imageUrl:
+                                                '${snapshot.data![index].images!.first.src}',
+                                            fit: BoxFit.cover,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ) /* Image.network(
                                                 '${snapshot.data![index].images!.first.src}',
                                                 fit: BoxFit.cover,
-                                              )
-                                            : Image.asset(
-                                                'assets/images/hijab_placeholder.jpg',
-                                                fit: BoxFit.cover,
-                                              ),
+                                              ) */
+                                        : Image.asset(
+                                            'assets/images/hijab_placeholder.jpg',
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                   onTap: () {
                                     latestProductsTabData
@@ -198,10 +232,16 @@ class LatestProductsTab extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: latestProductsTabData
                                 .loadedProducts[index].images!.isNotEmpty
-                            ? Image.network(
+                            ? CachedNetworkImage(
+                                imageUrl:
+                                    '${latestProductsTabData.loadedProducts[index].images!.first.src}',
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ) /* Image.network(
                                 '${latestProductsTabData.loadedProducts[index].images!.first.src}',
                                 fit: BoxFit.cover,
-                              )
+                              ) */
                             : Image.asset(
                                 'assets/images/hijab_placeholder.jpg',
                                 fit: BoxFit.cover,

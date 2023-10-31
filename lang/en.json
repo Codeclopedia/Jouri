@@ -40,7 +40,9 @@
     "shoppingCart": "Shopping Bag",
     "orderSummery": "order summery",
     "orderSubtotal": "order subtotal",
-    "proceed": "proceed"
+    "proceed": "proceed",
+    "notLoggedIn":"No user found",
+    "proceedAsGuest":"Proceed as Guest"
   },
   "favouritePage": {
     "emptyFavourite": "Your favourite list is empty"
@@ -59,7 +61,16 @@
   },
   "errors": {
     "emptyField": "empty field",
-    "invalid": "invalid data"
+    "invalid": "invalid data",
+    "firstName":"First Name can't be empty.",
+    "lastName":"Last Name can't be empty.",
+    "email":"Email can't be empty.",
+    "emailformat":"Please enter a valid email address.",
+    "mobileNumber":"Mobile number can't be empty.",
+    "country":"Country can't be empty.",
+    "city":"City can't be empty.",
+    "street":"Street Address can't be left empty.",
+    "paymentMethod":"Please select one valid payment method."
   },
   "config": {
     "error": "error",
@@ -73,5 +84,6 @@
 "edit":"edit",
 "cancel":"cancel",
 "saveChanges":"save changes"
-  }
+  },
+  "checkout":{"selectPaymentMethod":"Select a payment method","addressDetails":"Country selected is not available for delivery."}
 }

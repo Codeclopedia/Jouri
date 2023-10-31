@@ -33,15 +33,14 @@ class AttributeCard extends StatelessWidget {
         child: Center(
           child: Container(
             width: 200,
-            height: 30,
+            // height: 30,
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: Text(
-                attribute.name!,
-                style: attrStyle,
-              ),
+            child: Text(
+              attribute.name ?? '',
+              textAlign: TextAlign.center,
+              style: attrStyle,
             ),
           ),
         ),

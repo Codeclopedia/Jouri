@@ -75,7 +75,7 @@ class ProductVariation {
   int? downloadExpiry;
   String? taxStatus;
   String? taxClass;
-  String? manageStock;
+  var manageStock;
   int? stockQuantity;
   String? stockStatus;
   String? backorders;
@@ -417,7 +417,7 @@ class MetaDatum {
 
   int? id;
   String? key;
-  String? value;
+  dynamic value;
 
   factory MetaDatum.fromJson(String str) => MetaDatum.fromMap(json.decode(str));
 

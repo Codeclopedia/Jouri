@@ -14,7 +14,6 @@ import '../../../utilities/http_requests.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   String? firstname, lastname, email, phone, password;
-  bool loading = false;
   var formKey = GlobalKey<FormState>();
 
   var passwordController = TextEditingController();
@@ -27,8 +26,7 @@ class SignUpViewModel extends ChangeNotifier {
   signUp(context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      loading = true;
-      notifyListeners();
+      General.showProgress(context);
       var url = Constants.baseUrl + Constants.customer + Constants.wooAuth;
       HttpRequests.httpPostRequest(
           context: context,
@@ -42,6 +40,7 @@ class SignUpViewModel extends ChangeNotifier {
             "password": password
           },
           success: (value) async {
+            print(value);
             var url = Constants.baseAuthUrl;
             HttpRequests.httpPostRequest(
                 context: context,
@@ -52,10 +51,10 @@ class SignUpViewModel extends ChangeNotifier {
                   'password': password,
                 },
                 success: (data) {
+                  print("second signup loop successful");
+                  General.dismissProgress();
                   var map = json.decode(data);
                   if (map['success']) {
-                    loading = false;
-                    notifyListeners();
                     General.setStringSP('token', map['data']['token']);
                     var user = Customer.fromJson(value);
                     General.saveUser(user.toJson());
@@ -68,15 +67,9 @@ class SignUpViewModel extends ChangeNotifier {
                         (route) => false);
                   }
                 },
-                error: () {
-                  loading = false;
-                  notifyListeners();
-                });
+                error: () {});
           },
-          error: () {
-            loading = false;
-            notifyListeners();
-          });
+          error: () {});
     }
   }
 }
